@@ -1,0 +1,3 @@
+[submodule "example-app/elm-mdc"]
+	path = example-app/elm-mdc
+	url = https://github.com/aforemny/elm-mdc.git
