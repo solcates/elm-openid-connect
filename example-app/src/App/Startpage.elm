@@ -1,7 +1,7 @@
 module App.Startpage exposing (..)
 
+import App.List
 import App.Page exposing (Page)
-import App.Startpage.Svg.DataTable as DataTableSvg
 import App.Url exposing (Url(..))
 import Html exposing (Html, text)
 import Html.Attributes exposing (href)
@@ -36,7 +36,7 @@ view : (Msg m -> m) -> Page m -> Model m -> Html m
 view lift page model =
     styled Html.div
         []
-        [ page.topappbar "EKMS"
+        [ page.topappbar "Example"
         , styled Html.nav
             []
             [ ImageList.view
@@ -64,20 +64,10 @@ view lift page model =
                                 ]
                             ]
                     )
-                    [ { url = KeyStores
-                      , icon = DataTableSvg.view
+                    [ { url = SecretPage
+                      , icon = App.List.view
                       , title = "Keystores"
                       , subtitle = "Keystores Subtitle"
-                      }
-                    , { url = Instances
-                      , icon = DataTableSvg.view
-                      , title = "Instances"
-                      , subtitle = "Instances Subtitle"
-                      }
-                    , { url = Keys
-                      , icon = DataTableSvg.view
-                      , title = "Keys"
-                      , subtitle = "Keys Subtitle"
                       }
                     ]
                 )

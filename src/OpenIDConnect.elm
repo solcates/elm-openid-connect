@@ -1,21 +1,9 @@
-module OpenIDConnect
-    exposing
-        ( ParseErr(..)
-        , Token
-        , authorize
-        , parse
-        , parseWithNonce
-        , parseToken
-        , newAuth
-        , tokenData
-        , tokenRaw
-        , showToken
-        , use
-        , withParam
-        , withScope
-        , withState
-        , withNonce
-        )
+module OpenIDConnect exposing
+    ( Token, tokenRaw, tokenData, parseToken, showToken
+    , ParseErr(..), parse, parseWithNonce
+    , authorize, newAuth, withScope, withState, withNonce, withParam
+    , use
+    )
 
 {-| An OpenID Connect implementation
 
@@ -42,10 +30,14 @@ module OpenIDConnect
 -}
 
 import Base64
-import Json.Decode as JsonD
-import QueryString as QS
-import Navigation
+import Browser.Navigation as Navigation exposing (Key)
 import Http
+import Json.Decode as JsonD
+import String
+import Url
+import Url.Builder as Builder exposing (QueryParameter)
+import Url.Parser
+import Url.Parser.Query as Query
 
 
 {-| Error returned by parsing functions
@@ -53,7 +45,7 @@ import Http
 type ParseErr
     = NoToken
     | Error String
-    | OAuthErr Err
+    | OAuthErr ErrorMessage
 
 
 type ErrCode
@@ -67,7 +59,7 @@ type ErrCode
     | Unknown
 
 
-type alias Err =
+type alias ErrorMessage =
     { error : ErrCode
     , errorDescription : Maybe String
     , errorUri : Maybe String
@@ -77,12 +69,21 @@ type alias Err =
 
 type alias Authorization =
     { url : String
-    , redirectUri : String
-    , clientID : String
+    , redirectUri : QueryParameter
+    , clientID : QueryParameter
     , scope : List String
     , state : Maybe String
     , nonce : Maybe String
     , params : List ( String, String )
+    }
+
+
+type alias AuthorizationResponse =
+    { accessToken : String
+    , expiresIn : String
+    , scope : String
+    , tokenType : String
+    , idToken : String
     }
 
 
@@ -103,14 +104,14 @@ use token =
 -}
 showToken : Token data -> String
 showToken token =
-    "Bearer " ++ (tokenRaw token)
+    "Bearer " ++ tokenRaw token
 
 
 {-| Returns the data of a Token
 -}
 tokenData : Token data -> data
-tokenData token =
-    case token of
+tokenData t =
+    case t of
         Token token data ->
             data
 
@@ -118,8 +119,8 @@ tokenData token =
 {-| Returns the raw encoded token as a string
 -}
 tokenRaw : Token data -> String
-tokenRaw token =
-    case token of
+tokenRaw t =
+    case t of
         Token token _ ->
             token
 
@@ -127,17 +128,17 @@ tokenRaw token =
 {-| Map token contents
 -}
 mapToken : (a -> b) -> Token a -> Token b
-mapToken f token =
-    case token of
+mapToken f t =
+    case t of
         Token token data ->
             Token token (f data)
 
 
 {-| Creates a Authorization
 -}
-newAuth : String -> String -> String -> Authorization
-newAuth url redirectUri clientId =
-    Authorization url redirectUri clientId [ "openid" ] Nothing Nothing []
+newAuth : Url.Url -> Url.Url -> String -> List String -> Authorization
+newAuth url redirectUri clientId scope =
+    Authorization (Url.toString url) (Builder.string "redirect_uri" (Url.toString redirectUri)) (Builder.string "client_id" clientId) scope Nothing Nothing []
 
 
 {-| Add a custom scope to a Authorization
@@ -182,100 +183,119 @@ authorize : Authorization -> Cmd msg
 authorize { url, redirectUri, clientID, scope, state, nonce, params } =
     let
         qs =
-            QS.empty
-                |> QS.add "client_id" clientID
-                |> QS.add "redirect_uri" redirectUri
-                |> QS.add "response_type" "id_token"
-                |> qsAddList "scope" scope
+            [ clientID
+            , redirectUri
+            , Builder.string "response_type" "id_token"
+            ]
+
+        t =
+            qsAddList "scope" scope qs
                 |> qsAddMaybe "state" state
                 |> qsAddMaybe "nonce" nonce
-                |> qsAddAll params
-                |> QS.render
+                |> Builder.toQuery
+
+        fUrl =
+            Debug.log "fUrl" (url ++ t)
     in
-        Navigation.load (url ++ qs)
+    Navigation.load fUrl
 
 
-qsAddList : String -> List String -> QS.QueryString -> QS.QueryString
-qsAddList param xs qs =
-    case xs of
-        [] ->
-            qs
+qsAddList : String -> List String -> List QueryParameter -> List QueryParameter
+qsAddList name xs qs =
+    let
+        list =
+            Builder.string name (String.join "," xs)
+    in
+    List.append qs [ list ]
 
-        _ ->
-            QS.add param (String.join " " xs) qs
 
-
-qsAddMaybe : String -> Maybe String -> QS.QueryString -> QS.QueryString
+qsAddMaybe : String -> Maybe String -> List QueryParameter -> List QueryParameter
 qsAddMaybe param ms qs =
     case ms of
         Nothing ->
             qs
 
         Just s ->
-            QS.add param s qs
+            List.append qs [ Builder.string param s ]
 
 
-qsAddAll : List ( String, String ) -> QS.QueryString -> QS.QueryString
-qsAddAll params qs =
+parseWithMaybeNonce : Maybe String -> JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
+parseWithMaybeNonce n decode url =
     let
-        append t =
-            QS.add (Tuple.first t) (Tuple.second t)
+        murl =
+            Debug.log "URL" url
+
+        id_token_parser : Query.Parser (Maybe String)
+        id_token_parser =
+            Query.string "id_token"
+
+        id_token =
+            Url.Parser.parse (Url.Parser.query id_token_parser) murl
+
+        error_parser : Query.Parser (Maybe String)
+        error_parser =
+            Query.string "error"
+
+        error =
+            Url.Parser.parse (Url.Parser.query error_parser) murl
     in
-        List.foldl append qs params
+    case ( id_token, error, n ) of
+        ( Just id, _, Just nonce ) ->
+            let
+                parseResult =
+                    case id of
+                        Nothing ->
+                            Result.Err <| Error "Error Parsing Token"
 
+                        Just a ->
+                            parseToken decode a
 
-parseWithMaybeNonce : Maybe String -> JsonD.Decoder data -> Navigation.Location -> Result ParseErr (Token data)
-parseWithMaybeNonce nonce decode { hash } =
-    let
-        qs =
-            QS.parse ("?" ++ String.dropLeft 1 hash)
+                validateNonce tokenWithNonce =
+                    if Tuple.first (tokenData tokenWithNonce) == nonce then
+                        Result.Ok <| mapToken Tuple.second tokenWithNonce
 
-        gets =
-            flip (QS.one QS.string) qs
+                    else
+                        Result.Err <| Error "Invalid nonce"
+            in
+            case parseResult of
+                Ok value ->
+                    Result.Ok (Debug.log "value" value)
 
-        geti =
-            flip (QS.one QS.int) qs
-    in
-        case ( gets "id_token", gets "error", nonce ) of
-            ( Just token, _, Just nonce ) ->
-                let
-                    parseResult =
-                        parseToken (JsonD.map2 (,) (JsonD.field "nonce" JsonD.string) decode) token
+                Err e ->
+                    Result.Err <| Error "Error Parsing Results"
 
-                    validateNonce tokenWithNonce =
-                        if Tuple.first (tokenData tokenWithNonce) == nonce then
-                            Result.Ok <| mapToken Tuple.second tokenWithNonce
-                        else
-                            Result.Err <| Error "Invalid nonce"
-                in
-                    parseResult |> Result.andThen validateNonce
+        ( Just id, _, Nothing ) ->
+            case id of
+                Nothing ->
+                    Result.Err <| Error "Error Parsing Token"
 
-            ( Just token, _, Nothing ) ->
-                parseToken decode token
+                Just a ->
+                    parseToken decode a
 
-            ( _, Just error, _ ) ->
-                parseError
-                    error
-                    (gets "error_description")
-                    (gets "error_uri")
-                    (gets "state")
+        ( _, Just e, _ ) ->
+            case e of
+                Nothing ->
+                    Result.Err (Error "Unknown Error")
 
-            _ ->
-                Result.Err NoToken
+                Just a ->
+                    Result.Err (Error a)
+
+        _ ->
+            Result.Err NoToken
 
 
 {-| Extracts a Token from a location and check the incoming nonce
 -}
-parseWithNonce : String -> JsonD.Decoder data -> Navigation.Location -> Result ParseErr (Token data)
-parseWithNonce nonce =
-    parseWithMaybeNonce (Just nonce)
+parseWithNonce : String -> JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
+parseWithNonce nonce data url =
+    parseWithMaybeNonce (Just nonce) data url
 
 
 {-| Extracts a Token from a location
 -}
-parse : JsonD.Decoder data -> Navigation.Location -> Result ParseErr (Token data)
-parse =
-    parseWithMaybeNonce Nothing
+parse : JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
+parse d u =
+    parseWithMaybeNonce Nothing d u
 
 
 {-| Parse a token
@@ -291,25 +311,26 @@ parseToken decode token =
                             Ok <| Token token result
 
                         Err err ->
-                            Result.Err <| Error err
+                            Result.Err (Error "decode payload error")
 
                 Err err ->
-                    Result.Err <| Error ("base64 decode: " ++ err)
+                    Result.Err (Error "decode part1 error")
 
         _ ->
-            Result.Err <| Error "Invalid id_token"
+            Result.Err (Error "Invalid id_token")
 
 
 base64Decode : String -> Result String String
 base64Decode data =
     case Base64.decode data of
         Ok result ->
-            if String.endsWith "\x00" result then
+            if String.endsWith "\u{0000}" result then
                 Ok <| String.dropRight 1 result
+
             else
                 Ok result
 
-        Err err ->
+        Result.Err err ->
             Result.Err err
 
 

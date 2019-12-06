@@ -74,9 +74,10 @@ drawerItems : Array ( String, Url )
 drawerItems =
     Array.fromList
         [ ( "Home", Url.StartPage )
-        , ( "KeyStores", Url.KeyStores )
-        , ( "Instances", Url.Instances )
-        , ( "Keys", Url.Keys )
+
+        --        , ( "URL1", Url.Url1 )
+        --        , ( "URL2", Url.Url2 )
+        --        , ( "URL3", Url.Url3 )
         ]
 
 

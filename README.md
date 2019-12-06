@@ -13,8 +13,8 @@ on which it will probably depend in a later version.
 ### Installation
 
 ```bash
-elm package install orus-io/elm-openid-connect
-elm package install elm-community/random-string
+elm install solcates/elm-openid-connect
+elm install elm-community/random-string
 ```
 
 ### Usage

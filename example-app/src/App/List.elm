@@ -1,4 +1,4 @@
-module App.Startpage.Svg.List exposing (view)
+module App.List exposing (view)
 
 import Html exposing (Html)
 import Svg exposing (circle, defs, desc, g, image, mask, path, pattern, rect, svg, text, text_, title, tspan, use)

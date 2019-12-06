@@ -1,0 +1,45 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKMS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- mdc -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rubik:300,400,500">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"/>
+    <link href="material-components-web.css" rel="stylesheet">
+    <link href="styles/main.css" rel="stylesheet">
+
+</head>
+<body class="mdc-typography">
+<script src="elm-mdc/elm-mdc.js"></script>
+<script src="elm.js"></script>
+<div id="elm"/>
+<script type="text/javascript">
+    function fromLocalStorage(name, newItem) {
+        const item = localStorage.getItem(name) || newItem();
+        localStorage.setItem(name, item);
+        return item;
+    }
+
+    const randomBytes = fromLocalStorage("randomBytes@authorization-code", () => {
+        const buffer = new Uint8Array(256);
+        crypto.getRandomValues(buffer);
+        return Array
+            .from(buffer)
+            .map(x => String.fromCharCode((x % 26) + 65))
+            .join("");
+    });
+    Elm.Main.init({
+        flags: {randomBytes},
+        node: document.getElementById('elm')
+    });
+
+</script>
+</div>
+</body>
