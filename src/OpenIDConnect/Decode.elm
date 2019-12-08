@@ -1,4 +1,4 @@
-module OpenIDConnect.Decode exposing (..)
+module OpenIDConnect.Decode exposing (expDecoder, subDecoder)
 
 {-| Provide decoders for the most common JWT attributes
 
