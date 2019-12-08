@@ -3,7 +3,7 @@
     "name": "solcates/elm-openid-connect",
     "summary": "A OpenID Connect implementation",
     "license": "MIT",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "exposed-modules": [
         "OpenIDConnect",
         "OpenIDConnect.Decode"
