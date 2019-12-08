@@ -36,7 +36,7 @@ import Json.Decode as JsonD
 import String
 import Url
 import Url.Builder as Builder exposing (QueryParameter)
-import Url.Parser
+import Url.Parser exposing ((<?>))
 import Url.Parser.Query as Query
 
 
@@ -222,66 +222,83 @@ qsAddMaybe param ms qs =
 parseWithMaybeNonce : Maybe String -> JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
 parseWithMaybeNonce n decode url =
     let
-        murl =
-            Debug.log "URL" url
-
-        id_token_parser : Query.Parser (Maybe String)
-        id_token_parser =
+        idParser =
             Query.string "id_token"
 
-        id_token =
-            Url.Parser.parse (Url.Parser.query id_token_parser) murl
-
-        error_parser : Query.Parser (Maybe String)
-        error_parser =
+        errorParser =
             Query.string "error"
 
-        error =
-            Url.Parser.parse (Url.Parser.query error_parser) murl
+        url_ =
+            Debug.log "url" url
     in
-    case ( id_token, error, n ) of
-        ( Just id, _, Just nonce ) ->
-            let
-                parseResult =
-                    case id of
-                        Nothing ->
-                            Result.Err <| Error "Error Parsing Token"
+    case Url.Parser.parse (Url.Parser.top <?> Query.map2 Tuple.pair idParser errorParser) url_ of
+        Just ( Just id, _ ) ->
+            --parseUrlQuery url Empty (Query.map Success <| authorizationSuccessParser code)
+            parseToken decode id
 
-                        Just a ->
-                            parseToken decode a
-
-                validateNonce tokenWithNonce =
-                    if Tuple.first (tokenData tokenWithNonce) == nonce then
-                        Result.Ok <| mapToken Tuple.second tokenWithNonce
-
-                    else
-                        Result.Err <| Error "Invalid nonce"
-            in
-            case parseResult of
-                Ok value ->
-                    Result.Ok (Debug.log "value" value)
-
-                Err e ->
-                    Result.Err <| Error "Error Parsing Results"
-
-        ( Just id, _, Nothing ) ->
-            case id of
-                Nothing ->
-                    Result.Err <| Error "Error Parsing Token"
-
-                Just a ->
-                    parseToken decode a
-
-        ( _, Just e, _ ) ->
-            case e of
-                Nothing ->
-                    Result.Err (Error "Unknown Error")
-
-                Just a ->
-                    Result.Err (Error a)
+        Just ( _, Just error ) ->
+            Result.Err (Error error)
 
         _ ->
             Result.Err NoToken
+
+
+
+--
+--parseWithMaybeNonce : Maybe String -> JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
+--parseWithMaybeNonce n decode url =
+--    let
+--        id_token =
+--            Url.Parser.parse (Url.Parser.query (Query.string "id_token")) url
+--
+--        error =
+--            Url.Parser.parse (Url.Parser.query (Query.string "error")) url
+--    in
+--
+--    case ( Debug.log "token" id_token, error, n ) of
+--        ( Just id, _, Just nonce ) ->
+--            let
+--                parseResult : Maybe String -> Result ParseErr (Token data)
+--                parseResult i =
+--                    case i of
+--                        Nothing ->
+--                            Result.Err (Error "No Token Found")
+--
+--                        Just a ->
+--                            parseToken decode a
+--
+--                validateNonce tokenWithNonce =
+--                    if Tuple.first (tokenData tokenWithNonce) == nonce then
+--                        Result.Ok <| mapToken Tuple.second tokenWithNonce
+--
+--                    else
+--                        Result.Err <| Error "Invalid nonce"
+--            in
+--            case parseResult id of
+--                Result.Ok value ->
+--                    Result.Ok (Debug.log "value" value)
+--
+--                Result.Err a ->
+--                    Result.Err (Debug.log "a" a)
+--
+--        ( Just id, _, Nothing ) ->
+--            case id of
+--                Just a ->
+--                    parseToken decode a
+--
+--                Nothing ->
+--                    Result.Err (Error "Test")
+--
+--        ( _, Just e, _ ) ->
+--            case e of
+--                Just a ->
+--                    Result.Err (Error a)
+--
+--                Nothing ->
+--                    Result.Err (Error "Unknown Error")
+--
+--        _ ->
+--            Result.Err (Error "Unknown Error")
 
 
 {-| Extracts a Token from a location and check the incoming nonce
@@ -295,7 +312,11 @@ parseWithNonce nonce data url =
 -}
 parse : JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
 parse d u =
-    parseWithMaybeNonce Nothing d u
+    let
+        url =
+            { u | path = "/" }
+    in
+    parseWithMaybeNonce Nothing d url
 
 
 {-| Parse a token

@@ -16,6 +16,7 @@ import Material
 import Material.Drawer.Dismissible as DismissibleDrawer
 import Material.Drawer.Modal as Drawer
 import Material.Options as Options exposing (cs, css, styled, when)
+import Material.Snackbar as Snackbar
 import Material.TopAppBar as TopAppBar
 import Material.Typography as Typography
 import Maybe exposing (Maybe)
@@ -157,7 +158,7 @@ update msg model =
 
         UrlRequested (Browser.Internal url) ->
             ( { model | url = AUrl.fromUrl url, is_drawer_open = False }
-            , Browser.Navigation.load (AUrl.toString (AUrl.fromUrl url))
+            , Browser.Navigation.load (AUrl.toString (AUrl.fromUrl (Debug.log "url" url)))
             )
 
         UrlRequested (Browser.External string) ->
@@ -257,24 +258,58 @@ update msg model =
 init : { randomBytes : String } -> Url.Url -> Browser.Navigation.Key -> ( Model, Cmd Msg )
 init { randomBytes } origin key =
     let
-        model =
-            defaultModel randomBytes origin key
-
         fixed =
-            Debug.log "origin" origin
+            case origin.fragment of
+                Nothing ->
+                    origin
+
+                Just a ->
+                    if String.contains "id_token" a then
+                        { origin | query = origin.fragment, fragment = Nothing }
+
+                    else
+                        origin
+
+        model =
+            defaultModel randomBytes fixed key
     in
     case OpenIDConnect.parse subDecoder fixed of
         -- A token has been parsed
-        Ok token ->
-            ( { model | id_token = Just (Debug.log "token" token) }, Cmd.none )
+        Result.Ok token ->
+            ( { model | id_token = Just token }, Cmd.none )
 
         -- Nothing to parse, unauthenticated
-        Err OpenIDConnect.NoToken ->
-            ( model, Cmd.none )
+        Result.Err OpenIDConnect.NoToken ->
+            let
+                contents =
+                    Snackbar.toast Nothing (Debug.log "No Token" "No Token")
+
+                ( mdc, effects ) =
+                    Snackbar.add Mdc "my-snackbar" contents model.mdc
+            in
+            ( { model | mdc = mdc }, effects )
 
         -- An other type of error (invalid parsing or an actual OAuth error)
-        Err _ ->
-            ( model, Cmd.none )
+        Result.Err (OpenIDConnect.Error a) ->
+            let
+                contents =
+                    Snackbar.toast Nothing a
+
+                ( mdc, effects ) =
+                    Snackbar.add Mdc "my-snackbar" contents model.mdc
+            in
+            ( { model | mdc = mdc }, effects )
+
+        -- An other type of error (invalid parsing or an actual OAuth error)
+        Result.Err (OpenIDConnect.OAuthErr _) ->
+            let
+                contents =
+                    Snackbar.toast Nothing "No"
+
+                ( mdc, effects ) =
+                    Snackbar.add Mdc "my-snackbar" contents model.mdc
+            in
+            ( { model | mdc = mdc }, effects )
 
 
 subscriptions : Model -> Sub Msg
@@ -391,10 +426,10 @@ view title { onSignOut, buttons, sn } model =
         body =
             case ( model.id_token, model.profile ) of
                 ( Nothing, Nothing ) ->
-                    [ viewBody model (viewLogin { buttons = buttons, sn = sn }) ]
+                    [ viewBody model (viewLogin model { buttons = buttons, sn = sn }) ]
 
                 ( Just token, Nothing ) ->
-                    [ viewBody model (viewLogin { buttons = buttons, sn = sn }) ]
+                    [ viewBody model (viewLogin model { buttons = buttons, sn = sn }) ]
 
                 ( _, Just profile ) ->
                     [ view_ model ]
@@ -423,7 +458,8 @@ view_ model =
                         , css "height" "100%"
                         , Typography.typography
                         ]
-                        [ bar "EKMS"
+                        [ Snackbar.view Mdc "my-snackbar" model.mdc [] []
+                        , bar "Example"
                         , styled div
                             [ cs "demo-panel"
                             , css "display" "flex"
@@ -484,21 +520,24 @@ view_ model =
                 ]
 
 
-viewBody : Model -> List (Html msg) -> Html msg
+viewBody : Model -> List (Html Msg) -> Html Msg
 viewBody model content =
-    div
-        [ style "display" "flex"
-        , style "align-items" "center"
-        , style "justify-content" "center"
-        , style "width" "100%"
-        , style "height" "98vh"
-        , style "font-family" "Roboto, Arial, sans-serif"
+    div []
+        [ Snackbar.view Mdc "my-snackbar" model.mdc [] []
+        , div
+            [ style "display" "flex"
+            , style "align-items" "center"
+            , style "justify-content" "center"
+            , style "width" "100%"
+            , style "height" "98vh"
+            , style "font-family" "Roboto, Arial, sans-serif"
+            ]
+            (viewError model.error :: content)
         ]
-        (viewError model.error :: content)
 
 
-viewLogin : { buttons : List (Html msg), sn : List (Html msg) } -> List (Html msg)
-viewLogin { buttons, sn } =
+viewLogin : Model -> { buttons : List (Html msg), sn : List (Html msg) } -> List (Html msg)
+viewLogin model { buttons, sn } =
     [ div
         [ style "display" "flex"
         , style "align-items" "flex-end"
@@ -576,14 +615,14 @@ attrLogo provider =
 
 sideNote : List (Html msg)
 sideNote =
-    [ h1 [] [ text "Thales EKMS" ]
+    [ h1 [] [ text "Example App" ]
     , p []
         [ text """
 
   """
         ]
     , p []
-        [ text "This is a Beta program... "
+        [ text "So you want to come in?"
         , br [] []
         , ul []
             []

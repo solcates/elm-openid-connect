@@ -16,7 +16,11 @@ type Url
 
 toString : Url -> String
 toString url =
-    case url of
+    let
+        u =
+            Debug.log "toString" url
+    in
+    case u of
         StartPage ->
             "#"
 
@@ -29,7 +33,12 @@ toString url =
 
 fromUrl : Url.Url -> Url
 fromUrl url =
-    fromString (Maybe.withDefault "" url.fragment)
+    case url.fragment of
+        Just "" ->
+            Debug.log "jurl:" (fromString (Maybe.withDefault "" url.fragment))
+
+        _ ->
+            Debug.log "durl:" (fromString (Maybe.withDefault "" url.fragment))
 
 
 fromString : String -> Url

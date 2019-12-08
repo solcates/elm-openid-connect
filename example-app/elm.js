@@ -5267,120 +5267,43 @@ var $elm$core$Task$perform = F2(
 	});
 var $elm$browser$Browser$application = _Browser_application;
 var $elm$json$Json$Decode$field = _Json_decodeField;
-var $author$project$App$Page$None = {$: 'None'};
-var $author$project$App$Url$StartPage = {$: 'StartPage'};
-var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
-var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
-var $author$project$Material$defaultModel = {button: $elm$core$Dict$empty, checkbox: $elm$core$Dict$empty, chip: $elm$core$Dict$empty, dialog: $elm$core$Dict$empty, drawer: $elm$core$Dict$empty, fab: $elm$core$Dict$empty, iconButton: $elm$core$Dict$empty, list: $elm$core$Dict$empty, menu: $elm$core$Dict$empty, radio: $elm$core$Dict$empty, ripple: $elm$core$Dict$empty, select: $elm$core$Dict$empty, slider: $elm$core$Dict$empty, snackbar: $elm$core$Dict$empty, _switch: $elm$core$Dict$empty, tabbar: $elm$core$Dict$empty, textfield: $elm$core$Dict$empty, topAppBar: $elm$core$Dict$empty};
-var $author$project$App$Startpage$defaultModel = {mdc: $author$project$Material$defaultModel};
-var $author$project$Main$defaultModel = F3(
-	function (state, origin, key) {
-		return {
-			access_token: $elm$core$Maybe$Nothing,
-			error: $elm$core$Maybe$Nothing,
-			headers: _List_Nil,
-			id_token: $elm$core$Maybe$Nothing,
-			is_drawer_open: true,
-			key: key,
-			mdc: $author$project$Material$defaultModel,
-			navigateToUrl: $elm$core$Maybe$Nothing,
-			profile: $elm$core$Maybe$Nothing,
-			redirectUri: _Utils_update(
-				origin,
-				{fragment: $elm$core$Maybe$Nothing, query: $elm$core$Maybe$Nothing}),
-			startpage: $author$project$App$Startpage$defaultModel,
-			state: state,
-			transition: $author$project$App$Page$None,
-			url: $author$project$App$Url$StartPage,
-			useDismissibleDrawer: true
-		};
-	});
-var $elm$core$Debug$log = _Debug_log;
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$OpenIDConnect$Error = function (a) {
-	return {$: 'Error', a: a};
+var $author$project$Main$Mdc = function (a) {
+	return {$: 'Mdc', a: a};
 };
-var $author$project$OpenIDConnect$NoToken = {$: 'NoToken'};
-var $author$project$OpenIDConnect$Token = F2(
+var $author$project$Internal$Msg$SnackbarMsg = F2(
 	function (a, b) {
-		return {$: 'Token', a: a, b: b};
+		return {$: 'SnackbarMsg', a: a, b: b};
 	});
-var $author$project$OpenIDConnect$mapToken = F2(
-	function (f, t) {
-		var token = t.a;
-		var data = t.b;
-		return A2(
-			$author$project$OpenIDConnect$Token,
-			token,
-			f(data));
+var $elm$core$Basics$composeL = F3(
+	function (g, f, x) {
+		return g(
+			f(x));
 	});
-var $elm$url$Url$Parser$State = F5(
-	function (visited, unvisited, params, frag, value) {
-		return {frag: frag, params: params, unvisited: unvisited, value: value, visited: visited};
-	});
-var $elm$url$Url$Parser$getFirstMatch = function (states) {
-	getFirstMatch:
-	while (true) {
-		if (!states.b) {
-			return $elm$core$Maybe$Nothing;
-		} else {
-			var state = states.a;
-			var rest = states.b;
-			var _v1 = state.unvisited;
-			if (!_v1.b) {
-				return $elm$core$Maybe$Just(state.value);
-			} else {
-				if ((_v1.a === '') && (!_v1.b.b)) {
-					return $elm$core$Maybe$Just(state.value);
-				} else {
-					var $temp$states = rest;
-					states = $temp$states;
-					continue getFirstMatch;
-				}
-			}
-		}
-	}
+var $author$project$Internal$Snackbar$Model$Inert = {$: 'Inert'};
+var $elm$core$Basics$negate = function (n) {
+	return -n;
 };
-var $elm$url$Url$Parser$removeFinalEmpty = function (segments) {
-	if (!segments.b) {
-		return _List_Nil;
-	} else {
-		if ((segments.a === '') && (!segments.b.b)) {
-			return _List_Nil;
+var $author$project$Internal$Snackbar$Model$defaultModel = {open: false, queue: _List_Nil, seq: -1, state: $author$project$Internal$Snackbar$Model$Inert};
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
 		} else {
-			var segment = segments.a;
-			var rest = segments.b;
-			return A2(
-				$elm$core$List$cons,
-				segment,
-				$elm$url$Url$Parser$removeFinalEmpty(rest));
-		}
-	}
-};
-var $elm$url$Url$Parser$preparePath = function (path) {
-	var _v0 = A2($elm$core$String$split, '/', path);
-	if (_v0.b && (_v0.a === '')) {
-		var segments = _v0.b;
-		return $elm$url$Url$Parser$removeFinalEmpty(segments);
-	} else {
-		var segments = _v0;
-		return $elm$url$Url$Parser$removeFinalEmpty(segments);
-	}
-};
-var $elm$url$Url$Parser$addToParametersHelp = F2(
-	function (value, maybeList) {
-		if (maybeList.$ === 'Nothing') {
-			return $elm$core$Maybe$Just(
-				_List_fromArray(
-					[value]));
-		} else {
-			var list = maybeList.a;
-			return $elm$core$Maybe$Just(
-				A2($elm$core$List$cons, value, list));
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
 		}
 	});
-var $elm$url$Url$percentDecode = _Url_percentDecode;
+var $author$project$Internal$Snackbar$Implementation$enqueue = F2(
+	function (contents, model) {
+		return _Utils_update(
+			model,
+			{
+				queue: A2(
+					$elm$core$List$append,
+					model.queue,
+					_List_fromArray(
+						[contents]))
+			});
+	});
 var $elm$core$Basics$compare = _Utils_compare;
 var $elm$core$Dict$get = F2(
 	function (targetKey, dict) {
@@ -5418,6 +5341,7 @@ var $elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
 		return {$: 'RBNode_elm_builtin', a: a, b: b, c: c, d: d, e: e};
 	});
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: 'RBEmpty_elm_builtin'};
 var $elm$core$Dict$Red = {$: 'Red'};
 var $elm$core$Dict$balance = F5(
 	function (color, key, value, left, right) {
@@ -5521,6 +5445,212 @@ var $elm$core$Dict$insert = F3(
 			return x;
 		}
 	});
+var $elm$core$Platform$Cmd$map = _Platform_map;
+var $elm$core$Tuple$mapSecond = F2(
+	function (func, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			x,
+			func(y));
+	});
+var $author$project$Internal$Snackbar$Model$Active = function (a) {
+	return {$: 'Active', a: a};
+};
+var $author$project$Internal$Snackbar$Model$Move = F2(
+	function (a, b) {
+		return {$: 'Move', a: a, b: b};
+	});
+var $author$project$Internal$Snackbar$Model$Timeout = {$: 'Timeout'};
+var $elm$core$Basics$always = F2(
+	function (a, _v0) {
+		return a;
+	});
+var $elm$core$Process$sleep = _Process_sleep;
+var $author$project$Internal$Helpers$delayedCmd = F2(
+	function (time, msg) {
+		return A2(
+			$elm$core$Task$perform,
+			$elm$core$Basics$always(msg),
+			$elm$core$Process$sleep(time));
+	});
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Internal$Snackbar$Implementation$tryDequeue = function (model) {
+	var _v0 = _Utils_Tuple2(model.state, model.queue);
+	if ((_v0.a.$ === 'Inert') && _v0.b.b) {
+		var _v1 = _v0.a;
+		var _v2 = _v0.b;
+		var c = _v2.a;
+		var cs = _v2.b;
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{
+					open: false,
+					queue: cs,
+					seq: model.seq + 1,
+					state: $author$project$Internal$Snackbar$Model$Active(c)
+				}),
+			A2(
+				$elm$core$Platform$Cmd$map,
+				$author$project$Internal$Snackbar$Model$Move(model.seq + 1),
+				A2($author$project$Internal$Helpers$delayedCmd, c.timeout, $author$project$Internal$Snackbar$Model$Timeout)));
+	} else {
+		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+	}
+};
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (maybe.$ === 'Just') {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Internal$Snackbar$Implementation$add = F4(
+	function (lift, idx, contents, store) {
+		var component_ = A2(
+			$elm$core$Maybe$withDefault,
+			$author$project$Internal$Snackbar$Model$defaultModel,
+			A2($elm$core$Dict$get, idx, store.snackbar));
+		var _v0 = A2(
+			$elm$core$Tuple$mapSecond,
+			$elm$core$Platform$Cmd$map(
+				A2(
+					$elm$core$Basics$composeL,
+					lift,
+					$author$project$Internal$Msg$SnackbarMsg(idx))),
+			$author$project$Internal$Snackbar$Implementation$tryDequeue(
+				A2($author$project$Internal$Snackbar$Implementation$enqueue, contents, component_)));
+		var component = _v0.a;
+		var effects = _v0.b;
+		var updatedStore = _Utils_update(
+			store,
+			{
+				snackbar: A3($elm$core$Dict$insert, idx, component, store.snackbar)
+			});
+		return _Utils_Tuple2(updatedStore, effects);
+	});
+var $author$project$Material$Snackbar$add = $author$project$Internal$Snackbar$Implementation$add;
+var $author$project$App$Page$None = {$: 'None'};
+var $author$project$App$Url$StartPage = {$: 'StartPage'};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
+var $author$project$Material$defaultModel = {button: $elm$core$Dict$empty, checkbox: $elm$core$Dict$empty, chip: $elm$core$Dict$empty, dialog: $elm$core$Dict$empty, drawer: $elm$core$Dict$empty, fab: $elm$core$Dict$empty, iconButton: $elm$core$Dict$empty, list: $elm$core$Dict$empty, menu: $elm$core$Dict$empty, radio: $elm$core$Dict$empty, ripple: $elm$core$Dict$empty, select: $elm$core$Dict$empty, slider: $elm$core$Dict$empty, snackbar: $elm$core$Dict$empty, _switch: $elm$core$Dict$empty, tabbar: $elm$core$Dict$empty, textfield: $elm$core$Dict$empty, topAppBar: $elm$core$Dict$empty};
+var $author$project$App$Startpage$defaultModel = {mdc: $author$project$Material$defaultModel};
+var $author$project$Main$defaultModel = F3(
+	function (state, origin, key) {
+		return {
+			access_token: $elm$core$Maybe$Nothing,
+			error: $elm$core$Maybe$Nothing,
+			headers: _List_Nil,
+			id_token: $elm$core$Maybe$Nothing,
+			is_drawer_open: true,
+			key: key,
+			mdc: $author$project$Material$defaultModel,
+			navigateToUrl: $elm$core$Maybe$Nothing,
+			profile: $elm$core$Maybe$Nothing,
+			redirectUri: _Utils_update(
+				origin,
+				{fragment: $elm$core$Maybe$Nothing, query: $elm$core$Maybe$Nothing}),
+			startpage: $author$project$App$Startpage$defaultModel,
+			state: state,
+			transition: $author$project$App$Page$None,
+			url: $author$project$App$Url$StartPage,
+			useDismissibleDrawer: true
+		};
+	});
+var $elm$core$Debug$log = _Debug_log;
+var $author$project$OpenIDConnect$Error = function (a) {
+	return {$: 'Error', a: a};
+};
+var $author$project$OpenIDConnect$NoToken = {$: 'NoToken'};
+var $elm$url$Url$Parser$Internal$Parser = function (a) {
+	return {$: 'Parser', a: a};
+};
+var $elm$url$Url$Parser$Query$map2 = F3(
+	function (func, _v0, _v1) {
+		var a = _v0.a;
+		var b = _v1.a;
+		return $elm$url$Url$Parser$Internal$Parser(
+			function (dict) {
+				return A2(
+					func,
+					a(dict),
+					b(dict));
+			});
+	});
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $elm$url$Url$Parser$State = F5(
+	function (visited, unvisited, params, frag, value) {
+		return {frag: frag, params: params, unvisited: unvisited, value: value, visited: visited};
+	});
+var $elm$url$Url$Parser$getFirstMatch = function (states) {
+	getFirstMatch:
+	while (true) {
+		if (!states.b) {
+			return $elm$core$Maybe$Nothing;
+		} else {
+			var state = states.a;
+			var rest = states.b;
+			var _v1 = state.unvisited;
+			if (!_v1.b) {
+				return $elm$core$Maybe$Just(state.value);
+			} else {
+				if ((_v1.a === '') && (!_v1.b.b)) {
+					return $elm$core$Maybe$Just(state.value);
+				} else {
+					var $temp$states = rest;
+					states = $temp$states;
+					continue getFirstMatch;
+				}
+			}
+		}
+	}
+};
+var $elm$url$Url$Parser$removeFinalEmpty = function (segments) {
+	if (!segments.b) {
+		return _List_Nil;
+	} else {
+		if ((segments.a === '') && (!segments.b.b)) {
+			return _List_Nil;
+		} else {
+			var segment = segments.a;
+			var rest = segments.b;
+			return A2(
+				$elm$core$List$cons,
+				segment,
+				$elm$url$Url$Parser$removeFinalEmpty(rest));
+		}
+	}
+};
+var $elm$url$Url$Parser$preparePath = function (path) {
+	var _v0 = A2($elm$core$String$split, '/', path);
+	if (_v0.b && (_v0.a === '')) {
+		var segments = _v0.b;
+		return $elm$url$Url$Parser$removeFinalEmpty(segments);
+	} else {
+		var segments = _v0;
+		return $elm$url$Url$Parser$removeFinalEmpty(segments);
+	}
+};
+var $elm$url$Url$Parser$addToParametersHelp = F2(
+	function (value, maybeList) {
+		if (maybeList.$ === 'Nothing') {
+			return $elm$core$Maybe$Just(
+				_List_fromArray(
+					[value]));
+		} else {
+			var list = maybeList.a;
+			return $elm$core$Maybe$Just(
+				A2($elm$core$List$cons, value, list));
+		}
+	});
+var $elm$url$Url$percentDecode = _Url_percentDecode;
 var $elm$core$Dict$getMin = function (dict) {
 	getMin:
 	while (true) {
@@ -5947,6 +6077,10 @@ var $elm$url$Url$Parser$parse = F2(
 					url.fragment,
 					$elm$core$Basics$identity)));
 	});
+var $author$project$OpenIDConnect$Token = F2(
+	function (a, b) {
+		return {$: 'Token', a: a, b: b};
+	});
 var $elm$core$Basics$composeR = F3(
 	function (f, g, x) {
 		return g(
@@ -6182,9 +6316,6 @@ var $elm$core$Result$map = F2(
 			return $elm$core$Result$Err(e);
 		}
 	});
-var $elm$core$Basics$negate = function (n) {
-	return -n;
-};
 var $elm$core$String$dropRight = F2(
 	function (n, string) {
 		return (n < 1) ? string : A3($elm$core$String$slice, 0, -n, string);
@@ -6207,15 +6338,6 @@ var $elm$regex$Regex$fromString = function (string) {
 		string);
 };
 var $elm$regex$Regex$never = _Regex_never;
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $truqu$elm_base64$Base64$Decode$validBase64Regex = A2(
 	$elm$core$Maybe$withDefault,
 	$elm$regex$Regex$never,
@@ -6312,13 +6434,33 @@ var $elm$url$Url$Parser$query = function (_v0) {
 				]);
 		});
 };
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
 };
-var $elm$url$Url$Parser$Internal$Parser = function (a) {
-	return {$: 'Parser', a: a};
-};
+var $elm$core$List$concatMap = F2(
+	function (f, list) {
+		return $elm$core$List$concat(
+			A2($elm$core$List$map, f, list));
+	});
+var $elm$url$Url$Parser$slash = F2(
+	function (_v0, _v1) {
+		var parseBefore = _v0.a;
+		var parseAfter = _v1.a;
+		return $elm$url$Url$Parser$Parser(
+			function (state) {
+				return A2(
+					$elm$core$List$concatMap,
+					parseAfter,
+					parseBefore(state));
+			});
+	});
+var $elm$url$Url$Parser$questionMark = F2(
+	function (parser, queryParser) {
+		return A2(
+			$elm$url$Url$Parser$slash,
+			parser,
+			$elm$url$Url$Parser$query(queryParser));
+	});
 var $elm$url$Url$Parser$Query$custom = F2(
 	function (key, func) {
 		return $elm$url$Url$Parser$Internal$Parser(
@@ -6343,92 +6485,75 @@ var $elm$url$Url$Parser$Query$string = function (key) {
 			}
 		});
 };
-var $author$project$OpenIDConnect$tokenData = function (t) {
-	var token = t.a;
-	var data = t.b;
-	return data;
-};
+var $elm$url$Url$Parser$top = $elm$url$Url$Parser$Parser(
+	function (state) {
+		return _List_fromArray(
+			[state]);
+	});
 var $author$project$OpenIDConnect$parseWithMaybeNonce = F3(
 	function (n, decode, url) {
-		var murl = A2($elm$core$Debug$log, 'URL', url);
-		var id_token_parser = $elm$url$Url$Parser$Query$string('id_token');
-		var id_token = A2(
+		var url_ = A2($elm$core$Debug$log, 'url', url);
+		var idParser = $elm$url$Url$Parser$Query$string('id_token');
+		var errorParser = $elm$url$Url$Parser$Query$string('error');
+		var _v0 = A2(
 			$elm$url$Url$Parser$parse,
-			$elm$url$Url$Parser$query(id_token_parser),
-			murl);
-		var error_parser = $elm$url$Url$Parser$Query$string('error');
-		var error = A2(
-			$elm$url$Url$Parser$parse,
-			$elm$url$Url$Parser$query(error_parser),
-			murl);
-		var _v0 = _Utils_Tuple3(id_token, error, n);
-		if (_v0.a.$ === 'Just') {
-			if (_v0.c.$ === 'Just') {
-				var id = _v0.a.a;
-				var nonce = _v0.c.a;
-				var validateNonce = function (tokenWithNonce) {
-					return _Utils_eq(
-						$author$project$OpenIDConnect$tokenData(tokenWithNonce).a,
-						nonce) ? $elm$core$Result$Ok(
-						A2($author$project$OpenIDConnect$mapToken, $elm$core$Tuple$second, tokenWithNonce)) : $elm$core$Result$Err(
-						$author$project$OpenIDConnect$Error('Invalid nonce'));
-				};
-				var parseResult = function () {
-					if (id.$ === 'Nothing') {
+			A2(
+				$elm$url$Url$Parser$questionMark,
+				$elm$url$Url$Parser$top,
+				A3($elm$url$Url$Parser$Query$map2, $elm$core$Tuple$pair, idParser, errorParser)),
+			url_);
+		_v0$2:
+		while (true) {
+			if (_v0.$ === 'Just') {
+				if (_v0.a.a.$ === 'Just') {
+					var _v1 = _v0.a;
+					var id = _v1.a.a;
+					return A2($author$project$OpenIDConnect$parseToken, decode, id);
+				} else {
+					if (_v0.a.b.$ === 'Just') {
+						var _v2 = _v0.a;
+						var error = _v2.b.a;
 						return $elm$core$Result$Err(
-							$author$project$OpenIDConnect$Error('Error Parsing Token'));
+							$author$project$OpenIDConnect$Error(error));
 					} else {
-						var a = id.a;
-						return A2($author$project$OpenIDConnect$parseToken, decode, a);
+						break _v0$2;
 					}
-				}();
-				if (parseResult.$ === 'Ok') {
-					var value = parseResult.a;
-					return $elm$core$Result$Ok(
-						A2($elm$core$Debug$log, 'value', value));
-				} else {
-					var e = parseResult.a;
-					return $elm$core$Result$Err(
-						$author$project$OpenIDConnect$Error('Error Parsing Results'));
 				}
 			} else {
-				var id = _v0.a.a;
-				var _v3 = _v0.c;
-				if (id.$ === 'Nothing') {
-					return $elm$core$Result$Err(
-						$author$project$OpenIDConnect$Error('Error Parsing Token'));
-				} else {
-					var a = id.a;
-					return A2($author$project$OpenIDConnect$parseToken, decode, a);
-				}
-			}
-		} else {
-			if (_v0.b.$ === 'Just') {
-				var e = _v0.b.a;
-				if (e.$ === 'Nothing') {
-					return $elm$core$Result$Err(
-						$author$project$OpenIDConnect$Error('Unknown Error'));
-				} else {
-					var a = e.a;
-					return $elm$core$Result$Err(
-						$author$project$OpenIDConnect$Error(a));
-				}
-			} else {
-				return $elm$core$Result$Err($author$project$OpenIDConnect$NoToken);
+				break _v0$2;
 			}
 		}
+		return $elm$core$Result$Err($author$project$OpenIDConnect$NoToken);
 	});
 var $author$project$OpenIDConnect$parse = F2(
 	function (d, u) {
-		return A3($author$project$OpenIDConnect$parseWithMaybeNonce, $elm$core$Maybe$Nothing, d, u);
+		var url = _Utils_update(
+			u,
+			{path: '/'});
+		return A3($author$project$OpenIDConnect$parseWithMaybeNonce, $elm$core$Maybe$Nothing, d, url);
 	});
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$OpenIDConnect$Decode$subDecoder = A2($elm$json$Json$Decode$field, 'sub', $elm$json$Json$Decode$string);
+var $author$project$Internal$Snackbar$Implementation$toast = F2(
+	function (onDismiss, message) {
+		return {action: $elm$core$Maybe$Nothing, dismissOnAction: true, fade: 250, message: message, onDismiss: onDismiss, stacked: false, timeout: 5000};
+	});
+var $author$project$Material$Snackbar$toast = $author$project$Internal$Snackbar$Implementation$toast;
 var $author$project$Main$init = F3(
 	function (_v0, origin, key) {
 		var randomBytes = _v0.randomBytes;
-		var model = A3($author$project$Main$defaultModel, randomBytes, origin, key);
-		var fixed = A2($elm$core$Debug$log, 'origin', origin);
+		var fixed = function () {
+			var _v6 = origin.fragment;
+			if (_v6.$ === 'Nothing') {
+				return origin;
+			} else {
+				var a = _v6.a;
+				return A2($elm$core$String$contains, 'id_token', a) ? _Utils_update(
+					origin,
+					{fragment: $elm$core$Maybe$Nothing, query: origin.fragment}) : origin;
+			}
+		}();
+		var model = A3($author$project$Main$defaultModel, randomBytes, fixed, key);
 		var _v1 = A2($author$project$OpenIDConnect$parse, $author$project$OpenIDConnect$Decode$subDecoder, fixed);
 		if (_v1.$ === 'Ok') {
 			var token = _v1.a;
@@ -6436,16 +6561,46 @@ var $author$project$Main$init = F3(
 				_Utils_update(
 					model,
 					{
-						id_token: $elm$core$Maybe$Just(
-							A2($elm$core$Debug$log, 'token', token))
+						id_token: $elm$core$Maybe$Just(token)
 					}),
 				$elm$core$Platform$Cmd$none);
 		} else {
-			if (_v1.a.$ === 'NoToken') {
-				var _v2 = _v1.a;
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			} else {
-				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			switch (_v1.a.$) {
+				case 'NoToken':
+					var _v2 = _v1.a;
+					var contents = A2(
+						$author$project$Material$Snackbar$toast,
+						$elm$core$Maybe$Nothing,
+						A2($elm$core$Debug$log, 'No Token', 'No Token'));
+					var _v3 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
+					var mdc = _v3.a;
+					var effects = _v3.b;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{mdc: mdc}),
+						effects);
+				case 'Error':
+					var a = _v1.a.a;
+					var contents = A2($author$project$Material$Snackbar$toast, $elm$core$Maybe$Nothing, a);
+					var _v4 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
+					var mdc = _v4.a;
+					var effects = _v4.b;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{mdc: mdc}),
+						effects);
+				default:
+					var contents = A2($author$project$Material$Snackbar$toast, $elm$core$Maybe$Nothing, 'No');
+					var _v5 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
+					var mdc = _v5.a;
+					var effects = _v5.b;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{mdc: mdc}),
+						effects);
 			}
 		}
 	});
@@ -6462,7 +6617,7 @@ var $author$project$Main$sideNote = _List_fromArray(
 		_List_Nil,
 		_List_fromArray(
 			[
-				$elm$html$Html$text('Thales EKMS')
+				$elm$html$Html$text('Example App')
 			])),
 		A2(
 		$elm$html$Html$p,
@@ -6476,16 +6631,13 @@ var $author$project$Main$sideNote = _List_fromArray(
 		_List_Nil,
 		_List_fromArray(
 			[
-				$elm$html$Html$text('This is a Beta program... '),
+				$elm$html$Html$text('So you want to come in?'),
 				A2($elm$html$Html$br, _List_Nil, _List_Nil),
 				A2($elm$html$Html$ul, _List_Nil, _List_Nil)
 			]))
 	]);
 var $author$project$Main$AnimationTick = function (a) {
 	return {$: 'AnimationTick', a: a};
-};
-var $author$project$Main$Mdc = function (a) {
-	return {$: 'Mdc', a: a};
 };
 var $author$project$Main$WindowResized = F2(
 	function (a, b) {
@@ -6603,11 +6755,6 @@ var $elm$browser$Browser$AnimationManager$onSelfMsg = F3(
 var $elm$browser$Browser$AnimationManager$Time = function (a) {
 	return {$: 'Time', a: a};
 };
-var $elm$core$Basics$composeL = F3(
-	function (g, f, x) {
-		return g(
-			f(x));
-	});
 var $elm$browser$Browser$AnimationManager$subMap = F2(
 	function (func, sub) {
 		if (sub.$ === 'Time') {
@@ -6991,14 +7138,6 @@ var $author$project$Main$StartPageMsg = function (a) {
 	return {$: 'StartPageMsg', a: a};
 };
 var $elm$browser$Browser$Navigation$load = _Browser_load;
-var $elm$core$List$append = F2(
-	function (xs, ys) {
-		if (!ys.b) {
-			return xs;
-		} else {
-			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
-		}
-	});
 var $elm$url$Url$Builder$QueryParameter = F2(
 	function (a, b) {
 		return {$: 'QueryParameter', a: a, b: b};
@@ -7138,8 +7277,20 @@ var $author$project$App$Url$fromString = function (url) {
 	}
 };
 var $author$project$App$Url$fromUrl = function (url) {
-	return $author$project$App$Url$fromString(
-		A2($elm$core$Maybe$withDefault, '', url.fragment));
+	var _v0 = url.fragment;
+	if ((_v0.$ === 'Just') && (_v0.a === '')) {
+		return A2(
+			$elm$core$Debug$log,
+			'jurl:',
+			$author$project$App$Url$fromString(
+				A2($elm$core$Maybe$withDefault, '', url.fragment)));
+	} else {
+		return A2(
+			$elm$core$Debug$log,
+			'durl:',
+			$author$project$App$Url$fromString(
+				A2($elm$core$Maybe$withDefault, '', url.fragment)));
+	}
 };
 var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
 var $elm$core$Basics$ge = _Utils_ge;
@@ -7247,13 +7398,14 @@ var $author$project$OpenIDConnect$newAuth = F4(
 var $elm$core$Basics$not = _Basics_not;
 var $elm$browser$Browser$Navigation$pushUrl = _Browser_pushUrl;
 var $author$project$App$Url$toString = function (url) {
-	switch (url.$) {
+	var u = A2($elm$core$Debug$log, 'toString', url);
+	switch (u.$) {
 		case 'StartPage':
 			return '#';
 		case 'SecretPage':
 			return '#secret';
 		default:
-			var requestedHash = url.a;
+			var requestedHash = u.a;
 			return requestedHash;
 	}
 };
@@ -7352,19 +7504,6 @@ var $author$project$Internal$Component$react = F8(
 var $author$project$Internal$Button$Model$RippleMsg = function (a) {
 	return {$: 'RippleMsg', a: a};
 };
-var $elm$core$Basics$always = F2(
-	function (a, _v0) {
-		return a;
-	});
-var $elm$core$Process$sleep = _Process_sleep;
-var $author$project$Internal$Helpers$delayedCmd = F2(
-	function (time, msg) {
-		return A2(
-			$elm$core$Task$perform,
-			$elm$core$Basics$always(msg),
-			$elm$core$Process$sleep(time));
-	});
-var $elm$core$Platform$Cmd$map = _Platform_map;
 var $author$project$Internal$Ripple$Model$Activate = F2(
 	function (a, b) {
 		return {$: 'Activate', a: a, b: b};
@@ -7974,14 +8113,6 @@ var $author$project$Internal$Drawer$Implementation$react = A4($author$project$In
 var $author$project$Internal$Msg$FabMsg = F2(
 	function (a, b) {
 		return {$: 'FabMsg', a: a, b: b};
-	});
-var $elm$core$Tuple$mapSecond = F2(
-	function (func, _v0) {
-		var x = _v0.a;
-		var y = _v0.b;
-		return _Utils_Tuple2(
-			x,
-			func(y));
 	});
 var $author$project$Internal$Component$generalise = F4(
 	function (update, lift, msg, model) {
@@ -8619,12 +8750,6 @@ var $author$project$Internal$Slider$Implementation$update = F3(
 		}
 	});
 var $author$project$Internal$Slider$Implementation$react = A4($author$project$Internal$Component$react, $author$project$Internal$Slider$Implementation$getSet.get, $author$project$Internal$Slider$Implementation$getSet.set, $author$project$Internal$Msg$SliderMsg, $author$project$Internal$Slider$Implementation$update);
-var $author$project$Internal$Msg$SnackbarMsg = F2(
-	function (a, b) {
-		return {$: 'SnackbarMsg', a: a, b: b};
-	});
-var $author$project$Internal$Snackbar$Model$Inert = {$: 'Inert'};
-var $author$project$Internal$Snackbar$Model$defaultModel = {open: false, queue: _List_Nil, seq: -1, state: $author$project$Internal$Snackbar$Model$Inert};
 var $author$project$Internal$Snackbar$Implementation$getSet = A3(
 	$author$project$Internal$Component$indexed,
 	function ($) {
@@ -8638,10 +8763,6 @@ var $author$project$Internal$Snackbar$Implementation$getSet = A3(
 		}),
 	$author$project$Internal$Snackbar$Model$defaultModel);
 var $author$project$Internal$Snackbar$Model$Clicked = {$: 'Clicked'};
-var $author$project$Internal$Snackbar$Model$Move = F2(
-	function (a, b) {
-		return {$: 'Move', a: a, b: b};
-	});
 var $author$project$Internal$Helpers$cmd = function (msg) {
 	return A2(
 		$elm$core$Task$perform,
@@ -8651,37 +8772,9 @@ var $author$project$Internal$Helpers$cmd = function (msg) {
 var $author$project$Internal$Snackbar$Model$Fading = function (a) {
 	return {$: 'Fading', a: a};
 };
-var $author$project$Internal$Snackbar$Model$Timeout = {$: 'Timeout'};
 var $author$project$Internal$Snackbar$Implementation$next = function (model) {
 	return $elm$core$Platform$Cmd$map(
 		$author$project$Internal$Snackbar$Model$Move(model.seq));
-};
-var $author$project$Internal$Snackbar$Model$Active = function (a) {
-	return {$: 'Active', a: a};
-};
-var $author$project$Internal$Snackbar$Implementation$tryDequeue = function (model) {
-	var _v0 = _Utils_Tuple2(model.state, model.queue);
-	if ((_v0.a.$ === 'Inert') && _v0.b.b) {
-		var _v1 = _v0.a;
-		var _v2 = _v0.b;
-		var c = _v2.a;
-		var cs = _v2.b;
-		return _Utils_Tuple2(
-			_Utils_update(
-				model,
-				{
-					open: false,
-					queue: cs,
-					seq: model.seq + 1,
-					state: $author$project$Internal$Snackbar$Model$Active(c)
-				}),
-			A2(
-				$elm$core$Platform$Cmd$map,
-				$author$project$Internal$Snackbar$Model$Move(model.seq + 1),
-				A2($author$project$Internal$Helpers$delayedCmd, c.timeout, $author$project$Internal$Snackbar$Model$Timeout)));
-	} else {
-		return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-	}
 };
 var $author$project$Internal$Snackbar$Implementation$move = F2(
 	function (transition, model) {
@@ -9418,7 +9511,8 @@ var $author$project$Main$update = F2(
 								}),
 							$elm$browser$Browser$Navigation$load(
 								$author$project$App$Url$toString(
-									$author$project$App$Url$fromUrl(url))));
+									$author$project$App$Url$fromUrl(
+										A2($elm$core$Debug$log, 'url', url)))));
 					} else {
 						var string = msg.a.a;
 						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
@@ -9540,114 +9634,49 @@ var $author$project$Main$update = F2(
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
-var $author$project$Main$viewError = function (error) {
-	if (error.$ === 'Nothing') {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					A2($elm$html$Html$Attributes$style, 'display', 'none')
-				]),
-			_List_Nil);
-	} else {
-		var msg = error.a;
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					A2($elm$html$Html$Attributes$style, 'width', '100%'),
-					A2($elm$html$Html$Attributes$style, 'padding', '1em'),
-					A2($elm$html$Html$Attributes$style, 'text-align', 'center'),
-					A2($elm$html$Html$Attributes$style, 'background', '#e74c3c'),
-					A2($elm$html$Html$Attributes$style, 'color', '#ffffff'),
-					A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
-					A2($elm$html$Html$Attributes$style, 'top', '0'),
-					A2($elm$html$Html$Attributes$style, 'display', 'block'),
-					A2($elm$html$Html$Attributes$style, 'box-sizing', 'border-box')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text(msg)
-				]));
-	}
+var $author$project$Internal$Msg$Dispatch = function (a) {
+	return {$: 'Dispatch', a: a};
 };
-var $author$project$Main$viewBody = F2(
-	function (model, content) {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-					A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
-					A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
-					A2($elm$html$Html$Attributes$style, 'width', '100%'),
-					A2($elm$html$Html$Attributes$style, 'height', '98vh'),
-					A2($elm$html$Html$Attributes$style, 'font-family', 'Roboto, Arial, sans-serif')
-				]),
-			A2(
-				$elm$core$List$cons,
-				$author$project$Main$viewError(model.error),
-				content));
+var $author$project$Internal$Options$Lift = function (a) {
+	return {$: 'Lift', a: a};
+};
+var $author$project$Internal$Options$dispatch = function (lift) {
+	return $author$project$Internal$Options$Lift(
+		$elm$json$Json$Decode$map(
+			function (_v0) {
+				var message = _v0.message;
+				var stopPropagation = _v0.stopPropagation;
+				var preventDefault = _v0.preventDefault;
+				return {
+					message: lift(
+						$author$project$Internal$Msg$Dispatch(message)),
+					preventDefault: preventDefault,
+					stopPropagation: stopPropagation
+				};
+			}));
+};
+var $author$project$Internal$Component$render = F3(
+	function (get_model, view, ctor) {
+		return F4(
+			function (lift, idx, store, options) {
+				return A3(
+					view,
+					A2(
+						$elm$core$Basics$composeL,
+						lift,
+						ctor(idx)),
+					A2(get_model, idx, store),
+					A2(
+						$elm$core$List$cons,
+						$author$project$Internal$Options$dispatch(lift),
+						options));
+			});
 	});
-var $author$project$Main$viewLogin = function (_v0) {
-	var buttons = _v0.buttons;
-	var sn = _v0.sn;
-	return _List_fromArray(
-		[
-			A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-					A2($elm$html$Html$Attributes$style, 'align-items', 'flex-end'),
-					A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
-					A2($elm$html$Html$Attributes$style, 'flex-direction', 'column')
-				]),
-			buttons),
-			A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					A2($elm$html$Html$Attributes$style, 'background', '#bdc3c7'),
-					A2($elm$html$Html$Attributes$style, 'height', '10em'),
-					A2($elm$html$Html$Attributes$style, 'width', '0.1em'),
-					A2($elm$html$Html$Attributes$style, 'margin', '0 1em')
-				]),
-			_List_Nil),
-			A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					A2($elm$html$Html$Attributes$style, 'width', '25em'),
-					A2($elm$html$Html$Attributes$style, 'padding', '1em 1em')
-				]),
-			$author$project$Main$sideNote)
-		]);
-};
-var $author$project$Main$CloseDrawer = {$: 'CloseDrawer'};
-var $author$project$Main$SelectDrawerItem = function (a) {
-	return {$: 'SelectDrawerItem', a: a};
-};
-var $author$project$Main$ToggleDrawer = {$: 'ToggleDrawer'};
-var $author$project$Internal$Options$Class = function (a) {
-	return {$: 'Class', a: a};
-};
-var $author$project$Internal$Options$cs = function (c) {
-	return $author$project$Internal$Options$Class(c);
-};
-var $author$project$Internal$Drawer$Dismissible$Implementation$appContent = $author$project$Internal$Options$cs('mdc-drawer-app-content');
-var $author$project$Material$Drawer$Dismissible$appContent = $author$project$Internal$Drawer$Dismissible$Implementation$appContent;
-var $author$project$Material$Options$cs = $author$project$Internal$Options$cs;
-var $author$project$Internal$Options$CSS = function (a) {
-	return {$: 'CSS', a: a};
-};
-var $author$project$Internal$Options$css = F2(
-	function (key, value) {
-		return $author$project$Internal$Options$CSS(
-			_Utils_Tuple2(key, value));
+var $author$project$Internal$Snackbar$Model$Dismiss = F2(
+	function (a, b) {
+		return {$: 'Dismiss', a: a, b: b};
 	});
-var $author$project$Material$Options$css = $author$project$Internal$Options$css;
-var $elm$html$Html$section = _VirtualDom_node('section');
+var $author$project$Internal$Snackbar$Model$SetOpen = {$: 'SetOpen'};
 var $elm$virtual_dom$VirtualDom$attribute = F2(
 	function (key, value) {
 		return A2(
@@ -9665,14 +9694,6 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
-var $elm$core$List$concat = function (lists) {
-	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
-};
-var $elm$core$List$concatMap = F2(
-	function (f, list) {
-		return $elm$core$List$concat(
-			A2($elm$core$List$map, f, list));
-	});
 var $elm$virtual_dom$VirtualDom$Custom = function (a) {
 	return {$: 'Custom', a: a};
 };
@@ -9816,10 +9837,6 @@ var $author$project$Internal$Options$addAttributes = F2(
 							$author$project$Internal$Dispatch$toAttributes(summary.dispatch))))));
 		return all;
 	});
-var $author$project$Internal$Options$Summary = F6(
-	function (classes, css, attrs, internal, dispatch, config) {
-		return {attrs: attrs, classes: classes, config: config, css: css, dispatch: dispatch, internal: internal};
-	});
 var $author$project$Internal$Dispatch$Config = function (a) {
 	return {$: 'Config', a: a};
 };
@@ -9854,155 +9871,6 @@ var $author$project$Internal$Dispatch$setLift = F2(
 				decoders: decoders,
 				lift: $elm$core$Maybe$Just(lift)
 			});
-	});
-var $author$project$Internal$Options$collect1_ = F2(
-	function (options, acc) {
-		switch (options.$) {
-			case 'Class':
-				var x = options.a;
-				return _Utils_update(
-					acc,
-					{
-						classes: A2($elm$core$List$cons, x, acc.classes)
-					});
-			case 'CSS':
-				var x = options.a;
-				return _Utils_update(
-					acc,
-					{
-						css: A2($elm$core$List$cons, x, acc.css)
-					});
-			case 'Attribute':
-				var x = options.a;
-				return _Utils_update(
-					acc,
-					{
-						attrs: A2($elm$core$List$cons, x, acc.attrs)
-					});
-			case 'Internal':
-				var x = options.a;
-				return _Utils_update(
-					acc,
-					{
-						internal: A2($elm$core$List$cons, x, acc.internal)
-					});
-			case 'Listener':
-				var event = options.a;
-				var decoder = options.b;
-				return _Utils_update(
-					acc,
-					{
-						dispatch: A3($author$project$Internal$Dispatch$add, event, decoder, acc.dispatch)
-					});
-			case 'Many':
-				var opts = options.a;
-				return A3($elm$core$List$foldl, $author$project$Internal$Options$collect1_, acc, opts);
-			case 'Lift':
-				var lift = options.a;
-				return _Utils_update(
-					acc,
-					{
-						dispatch: A2($author$project$Internal$Dispatch$setLift, lift, acc.dispatch)
-					});
-			case 'Set':
-				return acc;
-			default:
-				return acc;
-		}
-	});
-var $author$project$Internal$Dispatch$defaultConfig = $author$project$Internal$Dispatch$Config(
-	{decoders: $elm$core$Dict$empty, lift: $elm$core$Maybe$Nothing});
-var $author$project$Internal$Options$collect_ = A2(
-	$elm$core$List$foldl,
-	$author$project$Internal$Options$collect1_,
-	A6($author$project$Internal$Options$Summary, _List_Nil, _List_Nil, _List_Nil, _List_Nil, $author$project$Internal$Dispatch$defaultConfig, _Utils_Tuple0));
-var $author$project$Internal$Options$styled = F2(
-	function (ctor, props) {
-		return ctor(
-			A2(
-				$author$project$Internal$Options$addAttributes,
-				$author$project$Internal$Options$collect_(props),
-				_List_Nil));
-	});
-var $author$project$Material$Options$styled = $author$project$Internal$Options$styled;
-var $author$project$Internal$Options$None = {$: 'None'};
-var $author$project$Internal$Options$nop = $author$project$Internal$Options$None;
-var $author$project$Internal$Options$when = F2(
-	function (guard, prop) {
-		return guard ? prop : $author$project$Internal$Options$nop;
-	});
-var $author$project$Material$Options$when = $author$project$Internal$Options$when;
-var $author$project$App$Page$componentCatalogPanel = F2(
-	function (transition, nodes) {
-		return A3(
-			$author$project$Material$Options$styled,
-			$elm$html$Html$section,
-			_List_fromArray(
-				[
-					$author$project$Material$Options$cs('component-catalog-panel'),
-					A2(
-					$author$project$Material$Options$when,
-					_Utils_eq(transition, $author$project$App$Page$Enter) || _Utils_eq(transition, $author$project$App$Page$Active),
-					$author$project$Material$Options$cs('loadComponent-enter')),
-					A2(
-					$author$project$Material$Options$when,
-					_Utils_eq(transition, $author$project$App$Page$Active),
-					$author$project$Material$Options$cs('loadComponent-enter-active')),
-					A2($author$project$Material$Options$css, 'margin-top', '24px'),
-					A2($author$project$Material$Options$css, 'padding-bottom', '24px')
-				]),
-			nodes);
-	});
-var $author$project$Internal$Typography$Implementation$headline4 = $author$project$Internal$Options$cs('mdc-typography--headline4');
-var $author$project$Material$Typography$headline4 = $author$project$Internal$Typography$Implementation$headline4;
-var $author$project$Material$Typography$display4 = $author$project$Material$Typography$headline4;
-var $author$project$Internal$Options$Attribute = function (a) {
-	return {$: 'Attribute', a: a};
-};
-var $elm$virtual_dom$VirtualDom$mapAttribute = _VirtualDom_mapAttribute;
-var $elm$html$Html$Attributes$map = $elm$virtual_dom$VirtualDom$mapAttribute;
-var $author$project$Internal$Options$attribute = A2(
-	$elm$core$Basics$composeL,
-	$author$project$Internal$Options$Attribute,
-	$elm$html$Html$Attributes$map($elm$core$Basics$never));
-var $author$project$Material$Options$attribute = $author$project$Internal$Options$attribute;
-var $author$project$Internal$Drawer$Implementation$content = function (options) {
-	return A2(
-		$author$project$Internal$Options$styled,
-		$elm$html$Html$div,
-		A2(
-			$elm$core$List$cons,
-			$author$project$Internal$Options$cs('mdc-drawer__content'),
-			options));
-};
-var $author$project$Internal$Drawer$Modal$Implementation$content = $author$project$Internal$Drawer$Implementation$content;
-var $author$project$Material$Drawer$Modal$content = $author$project$Internal$Drawer$Modal$Implementation$content;
-var $author$project$Internal$TopAppBar$Implementation$fixedAdjust = $author$project$Internal$Options$cs('mdc-top-app-bar--fixed-adjust');
-var $author$project$Material$TopAppBar$fixedAdjust = $author$project$Internal$TopAppBar$Implementation$fixedAdjust;
-var $elm$html$Html$header = _VirtualDom_node('header');
-var $author$project$Internal$Drawer$Implementation$header = function (options) {
-	return A2(
-		$author$project$Internal$Options$styled,
-		$elm$html$Html$header,
-		A2(
-			$elm$core$List$cons,
-			$author$project$Internal$Options$cs('mdc-drawer__header'),
-			options));
-};
-var $author$project$Internal$Drawer$Modal$Implementation$header = $author$project$Internal$Drawer$Implementation$header;
-var $author$project$Material$Drawer$Modal$header = $author$project$Internal$Drawer$Modal$Implementation$header;
-var $elm$html$Html$img = _VirtualDom_node('img');
-var $elm$html$Html$a = _VirtualDom_node('a');
-var $author$project$Internal$List$Implementation$HtmlList = function (a) {
-	return {$: 'HtmlList', a: a};
-};
-var $author$project$Internal$List$Model$FocusItem = F2(
-	function (a, b) {
-		return {$: 'FocusItem', a: a, b: b};
-	});
-var $author$project$Internal$List$Model$SelectItem = F2(
-	function (a, b) {
-		return {$: 'SelectItem', a: a, b: b};
 	});
 var $author$project$Internal$Options$collect1 = F2(
 	function (opt, acc) {
@@ -10073,19 +9941,522 @@ var $author$project$Internal$Options$apply = F4(
 				A2($author$project$Internal$Options$recollect, summary, options),
 				attrs));
 	});
+var $author$project$Internal$Options$Attribute = function (a) {
+	return {$: 'Attribute', a: a};
+};
 var $author$project$Internal$Options$aria = F2(
 	function (key, val) {
 		return $author$project$Internal$Options$Attribute(
 			A2($elm$html$Html$Attributes$attribute, 'aria-' + key, val));
 	});
-var $elm$json$Json$Decode$at = F2(
-	function (fields, decoder) {
-		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+var $elm$virtual_dom$VirtualDom$mapAttribute = _VirtualDom_mapAttribute;
+var $elm$html$Html$Attributes$map = $elm$virtual_dom$VirtualDom$mapAttribute;
+var $author$project$Internal$Options$attribute = A2(
+	$elm$core$Basics$composeL,
+	$author$project$Internal$Options$Attribute,
+	$elm$html$Html$Attributes$map($elm$core$Basics$never));
+var $elm$html$Html$button = _VirtualDom_node('button');
+var $author$project$Internal$Options$Summary = F6(
+	function (classes, css, attrs, internal, dispatch, config) {
+		return {attrs: attrs, classes: classes, config: config, css: css, dispatch: dispatch, internal: internal};
 	});
+var $author$project$Internal$Dispatch$defaultConfig = $author$project$Internal$Dispatch$Config(
+	{decoders: $elm$core$Dict$empty, lift: $elm$core$Maybe$Nothing});
 var $author$project$Internal$Options$collect = A2(
 	$elm$core$Basics$composeR,
 	A5($author$project$Internal$Options$Summary, _List_Nil, _List_Nil, _List_Nil, _List_Nil, $author$project$Internal$Dispatch$defaultConfig),
 	$author$project$Internal$Options$recollect);
+var $author$project$Internal$Options$Class = function (a) {
+	return {$: 'Class', a: a};
+};
+var $author$project$Internal$Options$cs = function (c) {
+	return $author$project$Internal$Options$Class(c);
+};
+var $author$project$Internal$Snackbar$Implementation$defaultConfig = {dismissible: false};
+var $author$project$Internal$Options$Listener = F2(
+	function (a, b) {
+		return {$: 'Listener', a: a, b: b};
+	});
+var $author$project$Internal$Options$on = F2(
+	function (event, decodeMessage) {
+		return A2(
+			$author$project$Internal$Options$Listener,
+			event,
+			A2(
+				$elm$json$Json$Decode$map,
+				function (message) {
+					return {message: message, preventDefault: false, stopPropagation: false};
+				},
+				decodeMessage));
+	});
+var $author$project$Internal$Options$data = F2(
+	function (key, val) {
+		return $author$project$Internal$Options$Attribute(
+			A2($elm$html$Html$Attributes$attribute, 'data-' + key, val));
+	});
+var $author$project$Material$Options$data = $author$project$Internal$Options$data;
+var $author$project$Internal$Options$Many = function (a) {
+	return {$: 'Many', a: a};
+};
+var $author$project$Internal$Options$many = $author$project$Internal$Options$Many;
+var $author$project$Material$Options$many = $author$project$Internal$Options$many;
+var $author$project$Material$Options$on = $author$project$Internal$Options$on;
+var $author$project$Internal$GlobalEvents$listener = F2(
+	function (name, decoder) {
+		return $author$project$Material$Options$many(
+			_List_fromArray(
+				[
+					A2($author$project$Material$Options$on, name, decoder),
+					A2($author$project$Material$Options$data, name, '{}')
+				]));
+	});
+var $author$project$Internal$GlobalEvents$onTick = $author$project$Internal$GlobalEvents$listener('globaltick');
+var $author$project$Internal$Options$role = function (value) {
+	return $author$project$Internal$Options$Attribute(
+		A2($elm$html$Html$Attributes$attribute, 'role', value));
+};
+var $author$project$Internal$Options$collect1_ = F2(
+	function (options, acc) {
+		switch (options.$) {
+			case 'Class':
+				var x = options.a;
+				return _Utils_update(
+					acc,
+					{
+						classes: A2($elm$core$List$cons, x, acc.classes)
+					});
+			case 'CSS':
+				var x = options.a;
+				return _Utils_update(
+					acc,
+					{
+						css: A2($elm$core$List$cons, x, acc.css)
+					});
+			case 'Attribute':
+				var x = options.a;
+				return _Utils_update(
+					acc,
+					{
+						attrs: A2($elm$core$List$cons, x, acc.attrs)
+					});
+			case 'Internal':
+				var x = options.a;
+				return _Utils_update(
+					acc,
+					{
+						internal: A2($elm$core$List$cons, x, acc.internal)
+					});
+			case 'Listener':
+				var event = options.a;
+				var decoder = options.b;
+				return _Utils_update(
+					acc,
+					{
+						dispatch: A3($author$project$Internal$Dispatch$add, event, decoder, acc.dispatch)
+					});
+			case 'Many':
+				var opts = options.a;
+				return A3($elm$core$List$foldl, $author$project$Internal$Options$collect1_, acc, opts);
+			case 'Lift':
+				var lift = options.a;
+				return _Utils_update(
+					acc,
+					{
+						dispatch: A2($author$project$Internal$Dispatch$setLift, lift, acc.dispatch)
+					});
+			case 'Set':
+				return acc;
+			default:
+				return acc;
+		}
+	});
+var $author$project$Internal$Options$collect_ = A2(
+	$elm$core$List$foldl,
+	$author$project$Internal$Options$collect1_,
+	A6($author$project$Internal$Options$Summary, _List_Nil, _List_Nil, _List_Nil, _List_Nil, $author$project$Internal$Dispatch$defaultConfig, _Utils_Tuple0));
+var $author$project$Internal$Options$styled = F2(
+	function (ctor, props) {
+		return ctor(
+			A2(
+				$author$project$Internal$Options$addAttributes,
+				$author$project$Internal$Options$collect_(props),
+				_List_Nil));
+	});
+var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
+var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
+var $author$project$Internal$Options$None = {$: 'None'};
+var $author$project$Internal$Options$nop = $author$project$Internal$Options$None;
+var $author$project$Internal$Options$when = F2(
+	function (guard, prop) {
+		return guard ? prop : $author$project$Internal$Options$nop;
+	});
+var $author$project$Internal$Snackbar$Implementation$snackbar = F4(
+	function (lift, model, options, _v0) {
+		var isOpening = function () {
+			var _v4 = model.state;
+			if (_v4.$ === 'Active') {
+				return !model.open;
+			} else {
+				return false;
+			}
+		}();
+		var isOpen = function () {
+			var _v3 = model.state;
+			if (_v3.$ === 'Active') {
+				return model.open;
+			} else {
+				return false;
+			}
+		}();
+		var isFading = function () {
+			var _v2 = model.state;
+			if (_v2.$ === 'Fading') {
+				return true;
+			} else {
+				return false;
+			}
+		}();
+		var contents = function () {
+			var _v1 = model.state;
+			switch (_v1.$) {
+				case 'Inert':
+					return $elm$core$Maybe$Nothing;
+				case 'Active':
+					var c = _v1.a;
+					return $elm$core$Maybe$Just(c);
+				default:
+					var c = _v1.a;
+					return $elm$core$Maybe$Just(c);
+			}
+		}();
+		var onDismiss = A2(
+			$elm$core$Maybe$andThen,
+			function ($) {
+				return $.onDismiss;
+			},
+			contents);
+		var stacked = _Utils_eq(
+			A2(
+				$elm$core$Maybe$map,
+				function ($) {
+					return $.stacked;
+				},
+				contents),
+			$elm$core$Maybe$Just(true));
+		var action = A2(
+			$elm$core$Maybe$andThen,
+			function ($) {
+				return $.action;
+			},
+			contents);
+		var summary = A2($author$project$Internal$Options$collect, $author$project$Internal$Snackbar$Implementation$defaultConfig, options);
+		var config = summary.config;
+		return A5(
+			$author$project$Internal$Options$apply,
+			summary,
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$author$project$Internal$Options$cs('mdc-snackbar'),
+					A2(
+					$author$project$Internal$Options$when,
+					isOpen,
+					$author$project$Internal$Options$cs('mdc-snackbar--open')),
+					A2(
+					$author$project$Internal$Options$when,
+					isOpening,
+					$author$project$Internal$Options$cs('mdc-snackbar--opening')),
+					A2(
+					$author$project$Internal$Options$when,
+					isFading,
+					$author$project$Internal$Options$cs('mdc-snackbar--closing')),
+					A2(
+					$author$project$Internal$Options$when,
+					isOpening,
+					$author$project$Internal$GlobalEvents$onTick(
+						$elm$json$Json$Decode$succeed(
+							lift($author$project$Internal$Snackbar$Model$SetOpen)))),
+					A2(
+					$author$project$Internal$Options$when,
+					stacked,
+					$author$project$Internal$Options$cs('mdc-snackbar--stacked'))
+				]),
+			_List_Nil,
+			_List_fromArray(
+				[
+					A3(
+					$author$project$Internal$Options$styled,
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							$author$project$Internal$Options$cs('mdc-snackbar__surface')
+						]),
+					_List_fromArray(
+						[
+							A3(
+							$author$project$Internal$Options$styled,
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$author$project$Internal$Options$cs('mdc-snackbar__label'),
+									$author$project$Internal$Options$role('status'),
+									A2($author$project$Internal$Options$aria, 'live', 'polite')
+								]),
+							A2(
+								$elm$core$Maybe$withDefault,
+								_List_Nil,
+								A2(
+									$elm$core$Maybe$map,
+									function (c) {
+										return _List_fromArray(
+											[
+												$elm$html$Html$text(c.message)
+											]);
+									},
+									contents))),
+							A3(
+							$author$project$Internal$Options$styled,
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									$author$project$Internal$Options$cs('mdc-snackbar__actions')
+								]),
+							_List_fromArray(
+								[
+									A3(
+									$author$project$Internal$Options$styled,
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$author$project$Internal$Options$cs('mdc-button'),
+											$author$project$Internal$Options$cs('mdc-snackbar__action'),
+											$author$project$Internal$Options$attribute(
+											$elm$html$Html$Attributes$type_('button')),
+											A2(
+											$author$project$Internal$Options$on,
+											'click',
+											$elm$json$Json$Decode$succeed(
+												lift(
+													A2($author$project$Internal$Snackbar$Model$Dismiss, true, onDismiss))))
+										]),
+									A2(
+										$elm$core$Maybe$withDefault,
+										_List_Nil,
+										A2(
+											$elm$core$Maybe$map,
+											function (actionString) {
+												return _List_fromArray(
+													[
+														$elm$html$Html$text(actionString)
+													]);
+											},
+											action))),
+									config.dismissible ? A3(
+									$author$project$Internal$Options$styled,
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$author$project$Internal$Options$cs('mdc-icon-button'),
+											$author$project$Internal$Options$cs('mdc-snackbar__dismiss'),
+											$author$project$Internal$Options$cs('material-icons'),
+											$author$project$Internal$Options$attribute(
+											$elm$html$Html$Attributes$title('Dismiss')),
+											A2(
+											$author$project$Internal$Options$on,
+											'click',
+											$elm$json$Json$Decode$succeed(
+												lift(
+													A2($author$project$Internal$Snackbar$Model$Dismiss, true, $elm$core$Maybe$Nothing))))
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('close')
+										])) : $elm$html$Html$text('')
+								]))
+						]))
+				]));
+	});
+var $author$project$Internal$Snackbar$Implementation$view = A3($author$project$Internal$Component$render, $author$project$Internal$Snackbar$Implementation$getSet.get, $author$project$Internal$Snackbar$Implementation$snackbar, $author$project$Internal$Msg$SnackbarMsg);
+var $author$project$Material$Snackbar$view = $author$project$Internal$Snackbar$Implementation$view;
+var $author$project$Main$viewError = function (error) {
+	if (error.$ === 'Nothing') {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					A2($elm$html$Html$Attributes$style, 'display', 'none')
+				]),
+			_List_Nil);
+	} else {
+		var msg = error.a;
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					A2($elm$html$Html$Attributes$style, 'width', '100%'),
+					A2($elm$html$Html$Attributes$style, 'padding', '1em'),
+					A2($elm$html$Html$Attributes$style, 'text-align', 'center'),
+					A2($elm$html$Html$Attributes$style, 'background', '#e74c3c'),
+					A2($elm$html$Html$Attributes$style, 'color', '#ffffff'),
+					A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
+					A2($elm$html$Html$Attributes$style, 'top', '0'),
+					A2($elm$html$Html$Attributes$style, 'display', 'block'),
+					A2($elm$html$Html$Attributes$style, 'box-sizing', 'border-box')
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(msg)
+				]));
+	}
+};
+var $author$project$Main$viewBody = F2(
+	function (model, content) {
+		return A2(
+			$elm$html$Html$div,
+			_List_Nil,
+			_List_fromArray(
+				[
+					A5($author$project$Material$Snackbar$view, $author$project$Main$Mdc, 'my-snackbar', model.mdc, _List_Nil, _List_Nil),
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+							A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
+							A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
+							A2($elm$html$Html$Attributes$style, 'width', '100%'),
+							A2($elm$html$Html$Attributes$style, 'height', '98vh'),
+							A2($elm$html$Html$Attributes$style, 'font-family', 'Roboto, Arial, sans-serif')
+						]),
+					A2(
+						$elm$core$List$cons,
+						$author$project$Main$viewError(model.error),
+						content))
+				]));
+	});
+var $author$project$Main$viewLogin = F2(
+	function (model, _v0) {
+		var buttons = _v0.buttons;
+		var sn = _v0.sn;
+		return _List_fromArray(
+			[
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+						A2($elm$html$Html$Attributes$style, 'align-items', 'flex-end'),
+						A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
+						A2($elm$html$Html$Attributes$style, 'flex-direction', 'column')
+					]),
+				buttons),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'background', '#bdc3c7'),
+						A2($elm$html$Html$Attributes$style, 'height', '10em'),
+						A2($elm$html$Html$Attributes$style, 'width', '0.1em'),
+						A2($elm$html$Html$Attributes$style, 'margin', '0 1em')
+					]),
+				_List_Nil),
+				A2(
+				$elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2($elm$html$Html$Attributes$style, 'width', '25em'),
+						A2($elm$html$Html$Attributes$style, 'padding', '1em 1em')
+					]),
+				$author$project$Main$sideNote)
+			]);
+	});
+var $author$project$Main$CloseDrawer = {$: 'CloseDrawer'};
+var $author$project$Main$SelectDrawerItem = function (a) {
+	return {$: 'SelectDrawerItem', a: a};
+};
+var $author$project$Main$ToggleDrawer = {$: 'ToggleDrawer'};
+var $author$project$Internal$Drawer$Dismissible$Implementation$appContent = $author$project$Internal$Options$cs('mdc-drawer-app-content');
+var $author$project$Material$Drawer$Dismissible$appContent = $author$project$Internal$Drawer$Dismissible$Implementation$appContent;
+var $author$project$Material$Options$cs = $author$project$Internal$Options$cs;
+var $author$project$Internal$Options$CSS = function (a) {
+	return {$: 'CSS', a: a};
+};
+var $author$project$Internal$Options$css = F2(
+	function (key, value) {
+		return $author$project$Internal$Options$CSS(
+			_Utils_Tuple2(key, value));
+	});
+var $author$project$Material$Options$css = $author$project$Internal$Options$css;
+var $elm$html$Html$section = _VirtualDom_node('section');
+var $author$project$Material$Options$styled = $author$project$Internal$Options$styled;
+var $author$project$Material$Options$when = $author$project$Internal$Options$when;
+var $author$project$App$Page$componentCatalogPanel = F2(
+	function (transition, nodes) {
+		return A3(
+			$author$project$Material$Options$styled,
+			$elm$html$Html$section,
+			_List_fromArray(
+				[
+					$author$project$Material$Options$cs('component-catalog-panel'),
+					A2(
+					$author$project$Material$Options$when,
+					_Utils_eq(transition, $author$project$App$Page$Enter) || _Utils_eq(transition, $author$project$App$Page$Active),
+					$author$project$Material$Options$cs('loadComponent-enter')),
+					A2(
+					$author$project$Material$Options$when,
+					_Utils_eq(transition, $author$project$App$Page$Active),
+					$author$project$Material$Options$cs('loadComponent-enter-active')),
+					A2($author$project$Material$Options$css, 'margin-top', '24px'),
+					A2($author$project$Material$Options$css, 'padding-bottom', '24px')
+				]),
+			nodes);
+	});
+var $author$project$Internal$Typography$Implementation$headline4 = $author$project$Internal$Options$cs('mdc-typography--headline4');
+var $author$project$Material$Typography$headline4 = $author$project$Internal$Typography$Implementation$headline4;
+var $author$project$Material$Typography$display4 = $author$project$Material$Typography$headline4;
+var $author$project$Material$Options$attribute = $author$project$Internal$Options$attribute;
+var $author$project$Internal$Drawer$Implementation$content = function (options) {
+	return A2(
+		$author$project$Internal$Options$styled,
+		$elm$html$Html$div,
+		A2(
+			$elm$core$List$cons,
+			$author$project$Internal$Options$cs('mdc-drawer__content'),
+			options));
+};
+var $author$project$Internal$Drawer$Modal$Implementation$content = $author$project$Internal$Drawer$Implementation$content;
+var $author$project$Material$Drawer$Modal$content = $author$project$Internal$Drawer$Modal$Implementation$content;
+var $author$project$Internal$TopAppBar$Implementation$fixedAdjust = $author$project$Internal$Options$cs('mdc-top-app-bar--fixed-adjust');
+var $author$project$Material$TopAppBar$fixedAdjust = $author$project$Internal$TopAppBar$Implementation$fixedAdjust;
+var $elm$html$Html$header = _VirtualDom_node('header');
+var $author$project$Internal$Drawer$Implementation$header = function (options) {
+	return A2(
+		$author$project$Internal$Options$styled,
+		$elm$html$Html$header,
+		A2(
+			$elm$core$List$cons,
+			$author$project$Internal$Options$cs('mdc-drawer__header'),
+			options));
+};
+var $author$project$Internal$Drawer$Modal$Implementation$header = $author$project$Internal$Drawer$Implementation$header;
+var $author$project$Material$Drawer$Modal$header = $author$project$Internal$Drawer$Modal$Implementation$header;
+var $elm$html$Html$img = _VirtualDom_node('img');
+var $elm$html$Html$a = _VirtualDom_node('a');
+var $author$project$Internal$List$Implementation$HtmlList = function (a) {
+	return {$: 'HtmlList', a: a};
+};
+var $author$project$Internal$List$Model$FocusItem = F2(
+	function (a, b) {
+		return {$: 'FocusItem', a: a, b: b};
+	});
+var $author$project$Internal$List$Model$SelectItem = F2(
+	function (a, b) {
+		return {$: 'SelectItem', a: a, b: b};
+	});
+var $elm$json$Json$Decode$at = F2(
+	function (fields, decoder) {
+		return A3($elm$core$List$foldr, $elm$json$Json$Decode$field, decoder, fields);
+	});
 var $author$project$Internal$List$Implementation$defaultConfig = {activated: false, disabled: false, isRadioGroup: false, isSingleSelectionList: false, node: $elm$core$Maybe$Nothing, onSelectListItem: $elm$core$Maybe$Nothing, selected: false, selectedIndex: $elm$core$Maybe$Nothing, useActivated: false};
 var $author$project$Internal$List$Implementation$disabledClass = $author$project$Internal$Options$cs('mdc-list-item--disabled');
 var $author$project$Internal$List$Implementation$find = F2(
@@ -10316,6 +10687,10 @@ var $elm$core$Array$slice = F3(
 			correctFrom,
 			A2($elm$core$Array$sliceRight, correctTo, array));
 	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
 var $elm$core$Array$toIndexedList = function (array) {
 	var len = array.a;
 	var helper = F2(
@@ -10375,22 +10750,6 @@ var $author$project$Internal$List$Implementation$listItemDomId = F2(
 	function (domId, index) {
 		return domId + ('--' + $elm$core$String$fromInt(index));
 	});
-var $author$project$Internal$Options$Listener = F2(
-	function (a, b) {
-		return {$: 'Listener', a: a, b: b};
-	});
-var $author$project$Internal$Options$on = F2(
-	function (event, decodeMessage) {
-		return A2(
-			$author$project$Internal$Options$Listener,
-			event,
-			A2(
-				$elm$json$Json$Decode$map,
-				function (message) {
-					return {message: message, preventDefault: false, stopPropagation: false};
-				},
-				decodeMessage));
-	});
 var $author$project$Internal$Options$onClick = function (msg) {
 	return A2(
 		$author$project$Internal$Options$on,
@@ -10401,10 +10760,6 @@ var $author$project$Internal$Options$onWithOptions = function (evt) {
 	return $author$project$Internal$Options$Listener(evt);
 };
 var $elm$json$Json$Decode$oneOf = _Json_oneOf;
-var $author$project$Internal$Options$role = function (value) {
-	return $author$project$Internal$Options$Attribute(
-		A2($elm$html$Html$Attributes$attribute, 'role', value));
-};
 var $elm$html$Html$Attributes$tabindex = function (n) {
 	return A2(
 		_VirtualDom_attribute,
@@ -10467,11 +10822,6 @@ var $author$project$Internal$Ripple$Implementation$cssVariables = F2(
 					])
 				]));
 		return variables;
-	});
-var $author$project$Internal$Options$data = F2(
-	function (key, val) {
-		return $author$project$Internal$Options$Attribute(
-			A2($elm$html$Html$Attributes$attribute, 'data-' + key, val));
 	});
 var $author$project$Internal$Ripple$Model$Activate0 = F2(
 	function (a, b) {
@@ -10604,25 +10954,8 @@ var $author$project$Internal$Ripple$Implementation$decodeClientRect = $debois$el
 	A5($elm$json$Json$Decode$map4, $author$project$Internal$Ripple$Model$ClientRect, $debois$elm_dom$DOM$offsetTop, $debois$elm_dom$DOM$offsetLeft, $debois$elm_dom$DOM$offsetWidth, $debois$elm_dom$DOM$offsetHeight));
 var $elm$html$Html$Attributes$id = $elm$html$Html$Attributes$stringProperty('id');
 var $author$project$Internal$Options$id = A2($elm$core$Basics$composeL, $author$project$Internal$Options$Attribute, $elm$html$Html$Attributes$id);
-var $author$project$Internal$Options$Many = function (a) {
-	return {$: 'Many', a: a};
-};
-var $author$project$Internal$Options$many = $author$project$Internal$Options$Many;
-var $author$project$Material$Options$data = $author$project$Internal$Options$data;
-var $author$project$Material$Options$many = $author$project$Internal$Options$many;
-var $author$project$Material$Options$on = $author$project$Internal$Options$on;
-var $author$project$Internal$GlobalEvents$listener = F2(
-	function (name, decoder) {
-		return $author$project$Material$Options$many(
-			_List_fromArray(
-				[
-					A2($author$project$Material$Options$on, name, decoder),
-					A2($author$project$Material$Options$data, name, '{}')
-				]));
-	});
 var $author$project$Internal$GlobalEvents$onMouseUp = $author$project$Internal$GlobalEvents$listener('globalmouseup');
 var $author$project$Internal$GlobalEvents$onPointerUp = $author$project$Internal$GlobalEvents$listener('globalpointerup');
-var $author$project$Internal$GlobalEvents$onTick = $author$project$Internal$GlobalEvents$listener('globaltick');
 var $author$project$Internal$GlobalEvents$onTouchEnd = $author$project$Internal$GlobalEvents$listener('globaltouchend');
 var $author$project$Internal$Ripple$Implementation$view = F5(
 	function (isUnbounded, domId, lift, model, options) {
@@ -11027,44 +11360,6 @@ var $author$project$App$Page$listItem = F3(
 				]));
 	});
 var $elm$html$Html$nav = _VirtualDom_node('nav');
-var $author$project$Internal$Msg$Dispatch = function (a) {
-	return {$: 'Dispatch', a: a};
-};
-var $author$project$Internal$Options$Lift = function (a) {
-	return {$: 'Lift', a: a};
-};
-var $author$project$Internal$Options$dispatch = function (lift) {
-	return $author$project$Internal$Options$Lift(
-		$elm$json$Json$Decode$map(
-			function (_v0) {
-				var message = _v0.message;
-				var stopPropagation = _v0.stopPropagation;
-				var preventDefault = _v0.preventDefault;
-				return {
-					message: lift(
-						$author$project$Internal$Msg$Dispatch(message)),
-					preventDefault: preventDefault,
-					stopPropagation: stopPropagation
-				};
-			}));
-};
-var $author$project$Internal$Component$render = F3(
-	function (get_model, view, ctor) {
-		return F4(
-			function (lift, idx, store, options) {
-				return A3(
-					view,
-					A2(
-						$elm$core$Basics$composeL,
-						lift,
-						ctor(idx)),
-					A2(get_model, idx, store),
-					A2(
-						$elm$core$List$cons,
-						$author$project$Internal$Options$dispatch(lift),
-						options));
-			});
-	});
 var $author$project$Internal$List$Model$ResetFocusedItem = {$: 'ResetFocusedItem'};
 var $author$project$Internal$List$Implementation$doListItemDomId = F3(
 	function (domId, index, listItem) {
@@ -13387,7 +13682,8 @@ var $author$project$Main$view_ = function (model) {
 					]),
 				_List_fromArray(
 					[
-						bar('EKMS'),
+						A5($author$project$Material$Snackbar$view, $author$project$Main$Mdc, 'my-snackbar', model.mdc, _List_Nil, _List_Nil),
+						bar('Example'),
 						A3(
 						$author$project$Material$Options$styled,
 						$elm$html$Html$div,
@@ -13507,7 +13803,9 @@ var $author$project$Main$view = F3(
 							A2(
 							$author$project$Main$viewBody,
 							model,
-							$author$project$Main$viewLogin(
+							A2(
+								$author$project$Main$viewLogin,
+								model,
 								{buttons: buttons, sn: sn}))
 						]);
 				} else {
@@ -13515,11 +13813,7 @@ var $author$project$Main$view = F3(
 					var _v4 = _v1.b;
 					return _List_fromArray(
 						[
-							A2(
-							$author$project$Main$viewBody,
-							model,
-							$author$project$Main$viewLogin(
-								{buttons: buttons, sn: sn}))
+							$author$project$Main$view_(model)
 						]);
 				}
 			} else {
@@ -13536,7 +13830,6 @@ var $author$project$Main$attrLogo = function (provider) {
 	var data = 'data:image/png;base64,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';
 	return A2($elm$html$Html$Attributes$style, 'background', '0 center no-repeat url(\'' + (data + '\')'));
 };
-var $elm$html$Html$button = _VirtualDom_node('button');
 var $author$project$Main$Profile = F2(
 	function (name, picture) {
 		return {name: name, picture: picture};
