@@ -66,8 +66,8 @@ view lift page model =
                     )
                     [ { url = SecretPage
                       , icon = App.List.view
-                      , title = "Keystores"
-                      , subtitle = "Keystores Subtitle"
+                      , title = "Things"
+                      , subtitle = "Things Subtitle"
                       }
                     ]
                 )

@@ -1,8 +1,9 @@
 module OpenIDConnect exposing
-    ( Token, tokenRaw, tokenData, parseToken, showToken
+    ( Token, tokenRaw, tokenData, showToken
     , ParseErr(..), parse, parseWithNonce
     , authorize, newAuth, withScope, withState, withNonce, withParam
     , use
+    , OAuthConfiguration, discovery, getSub
     )
 
 {-| An OpenID Connect implementation
@@ -32,7 +33,7 @@ module OpenIDConnect exposing
 import Base64
 import Browser.Navigation as Navigation exposing (Key)
 import Http
-import Json.Decode as JsonD
+import Json.Decode
 import String
 import Url
 import Url.Builder as Builder exposing (QueryParameter)
@@ -59,6 +60,23 @@ type ErrCode
     | Unknown
 
 
+type alias OAuthConfiguration =
+    { provider : String
+    , authorizationEndpoint : Url.Url
+    , tokenEndpoint : Url.Url
+    , profileEndpoint : Url.Url
+    , clientId : String
+    , scope : List String
+    , profileDecoder : Json.Decode.Decoder Profile
+    }
+
+
+type alias Profile =
+    { name : String
+    , picture : String
+    }
+
+
 type alias ErrorMessage =
     { error : ErrCode
     , errorDescription : Maybe String
@@ -78,19 +96,34 @@ type alias Authorization =
     }
 
 
-type alias AuthorizationResponse =
-    { accessToken : String
-    , expiresIn : String
-    , scope : String
-    , tokenType : String
-    , idToken : String
-    }
-
-
 {-| Token holder
 -}
 type Token data
     = Token String data
+
+
+type alias Provider =
+    { name : String
+    , host : String
+    }
+
+
+type Msg m
+    = GotDiscoveryResponse (Result Http.Error String)
+
+
+{-| Discover the OIDC details
+-}
+discovery : String -> (Result Http.Error String -> msg) -> Cmd msg
+discovery h f =
+    let
+        getDetails hostname function =
+            Http.get
+                { url = "https://" ++ hostname ++ "/.well-known/openid-configuration"
+                , expect = Http.expectString f
+                }
+    in
+    getDetails h f
 
 
 {-| Use a token to authenticate a request.
@@ -194,10 +227,10 @@ authorize { url, redirectUri, clientID, scope, state, nonce, params } =
                 |> qsAddMaybe "nonce" nonce
                 |> Builder.toQuery
 
-        fUrl =
-            Debug.log "fUrl" (url ++ t)
+        aUrl =
+            url ++ t
     in
-    Navigation.load fUrl
+    Navigation.load aUrl
 
 
 qsAddList : String -> List String -> List QueryParameter -> List QueryParameter
@@ -219,7 +252,7 @@ qsAddMaybe param ms qs =
             List.append qs [ Builder.string param s ]
 
 
-parseWithMaybeNonce : Maybe String -> JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
+parseWithMaybeNonce : Maybe String -> Json.Decode.Decoder data -> Url.Url -> Result ParseErr (Token data)
 parseWithMaybeNonce n decode url =
     let
         idParser =
@@ -233,9 +266,9 @@ parseWithMaybeNonce n decode url =
     in
     case Url.Parser.parse (Url.Parser.top <?> Query.map2 Tuple.pair idParser errorParser) url_ of
         Just ( Just id, _ ) ->
-            --parseUrlQuery url Empty (Query.map Success <| authorizationSuccessParser code)
-            parseToken decode id
+            getSub decode id
 
+        --getIDToken id
         Just ( _, Just error ) ->
             Result.Err (Error error)
 
@@ -303,14 +336,14 @@ parseWithMaybeNonce n decode url =
 
 {-| Extracts a Token from a location and check the incoming nonce
 -}
-parseWithNonce : String -> JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
+parseWithNonce : String -> Json.Decode.Decoder data -> Url.Url -> Result ParseErr (Token data)
 parseWithNonce nonce data url =
     parseWithMaybeNonce (Just nonce) data url
 
 
 {-| Extracts a Token from a location
 -}
-parse : JsonD.Decoder data -> Url.Url -> Result ParseErr (Token data)
+parse : Json.Decode.Decoder data -> Url.Url -> Result ParseErr (Token data)
 parse d u =
     let
         url =
@@ -319,18 +352,24 @@ parse d u =
     parseWithMaybeNonce Nothing d url
 
 
-{-| Parse a token
+getUserData : Result ParseErr Profile
+getUserData =
+    Result.Ok (Profile "test" "test")
+
+
+{-| Parse a token for an ID (JWT sub)
 -}
-parseToken : JsonD.Decoder data -> String -> Result ParseErr (Token data)
-parseToken decode token =
+getSub : Json.Decode.Decoder data -> String -> Result ParseErr (Token data)
+getSub decode token =
     case String.split "." token of
         [ part0, part1, sign ] ->
             case base64Decode part1 of
                 Ok payload ->
-                    case JsonD.decodeString decode payload of
+                    case Json.Decode.decodeString decode payload of
                         Ok result ->
-                            Ok <| Token token result
+                            Ok <| Token token (Debug.log "jwt id_token" result)
 
+                        --Ok <| Bearer token (Debug.log "jwt id_token" result)
                         Err err ->
                             Result.Err (Error "decode payload error")
 
@@ -341,6 +380,14 @@ parseToken decode token =
             Result.Err (Error "Invalid id_token")
 
 
+
+--getIDToken : String -> Result ParseErr (Token data)
+--getIDToken token =
+--    Result.Ok token
+
+
+{-| base64Decode decodes base64 encoded Strings and returns a Result
+-}
 base64Decode : String -> Result String String
 base64Decode data =
     case Base64.decode data of

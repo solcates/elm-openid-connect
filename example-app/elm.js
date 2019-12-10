@@ -4312,23 +4312,6 @@ function _Browser_load(url)
 }
 
 
-function _Url_percentEncode(string)
-{
-	return encodeURIComponent(string);
-}
-
-function _Url_percentDecode(string)
-{
-	try
-	{
-		return $elm$core$Maybe$Just(decodeURIComponent(string));
-	}
-	catch (e)
-	{
-		return $elm$core$Maybe$Nothing;
-	}
-}
-
 
 var _Bitwise_and = F2(function(a, b)
 {
@@ -4465,7 +4448,24 @@ var _Regex_splitAtMost = F3(function(n, re, str)
 });
 
 var _Regex_infinity = Infinity;
-var $elm$core$List$cons = _List_cons;
+
+
+function _Url_percentEncode(string)
+{
+	return encodeURIComponent(string);
+}
+
+function _Url_percentDecode(string)
+{
+	try
+	{
+		return $elm$core$Maybe$Just(decodeURIComponent(string));
+	}
+	catch (e)
+	{
+		return $elm$core$Maybe$Nothing;
+	}
+}var $elm$core$List$cons = _List_cons;
 var $elm$core$Elm$JsArray$foldr = _JsArray_foldr;
 var $elm$core$Array$foldr = F3(
 	function (func, baseCase, _v0) {
@@ -5543,6 +5543,7 @@ var $author$project$Main$defaultModel = F3(
 	function (state, origin, key) {
 		return {
 			access_token: $elm$core$Maybe$Nothing,
+			discovery: $elm$core$Maybe$Nothing,
 			error: $elm$core$Maybe$Nothing,
 			headers: _List_Nil,
 			id_token: $elm$core$Maybe$Nothing,
@@ -5566,6 +5567,341 @@ var $author$project$OpenIDConnect$Error = function (a) {
 	return {$: 'Error', a: a};
 };
 var $author$project$OpenIDConnect$NoToken = {$: 'NoToken'};
+var $author$project$OpenIDConnect$Sub = F2(
+	function (a, b) {
+		return {$: 'Sub', a: a, b: b};
+	});
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $truqu$elm_base64$Base64$Decode$pad = function (input) {
+	var _v0 = $elm$core$String$length(input) % 4;
+	switch (_v0) {
+		case 3:
+			return input + '=';
+		case 2:
+			return input + '==';
+		default:
+			return input;
+	}
+};
+var $elm$core$Result$andThen = F2(
+	function (callback, result) {
+		if (result.$ === 'Ok') {
+			var value = result.a;
+			return callback(value);
+		} else {
+			var msg = result.a;
+			return $elm$core$Result$Err(msg);
+		}
+	});
+var $truqu$elm_base64$Base64$Decode$charToInt = function (_char) {
+	switch (_char.valueOf()) {
+		case 'A':
+			return 0;
+		case 'B':
+			return 1;
+		case 'C':
+			return 2;
+		case 'D':
+			return 3;
+		case 'E':
+			return 4;
+		case 'F':
+			return 5;
+		case 'G':
+			return 6;
+		case 'H':
+			return 7;
+		case 'I':
+			return 8;
+		case 'J':
+			return 9;
+		case 'K':
+			return 10;
+		case 'L':
+			return 11;
+		case 'M':
+			return 12;
+		case 'N':
+			return 13;
+		case 'O':
+			return 14;
+		case 'P':
+			return 15;
+		case 'Q':
+			return 16;
+		case 'R':
+			return 17;
+		case 'S':
+			return 18;
+		case 'T':
+			return 19;
+		case 'U':
+			return 20;
+		case 'V':
+			return 21;
+		case 'W':
+			return 22;
+		case 'X':
+			return 23;
+		case 'Y':
+			return 24;
+		case 'Z':
+			return 25;
+		case 'a':
+			return 26;
+		case 'b':
+			return 27;
+		case 'c':
+			return 28;
+		case 'd':
+			return 29;
+		case 'e':
+			return 30;
+		case 'f':
+			return 31;
+		case 'g':
+			return 32;
+		case 'h':
+			return 33;
+		case 'i':
+			return 34;
+		case 'j':
+			return 35;
+		case 'k':
+			return 36;
+		case 'l':
+			return 37;
+		case 'm':
+			return 38;
+		case 'n':
+			return 39;
+		case 'o':
+			return 40;
+		case 'p':
+			return 41;
+		case 'q':
+			return 42;
+		case 'r':
+			return 43;
+		case 's':
+			return 44;
+		case 't':
+			return 45;
+		case 'u':
+			return 46;
+		case 'v':
+			return 47;
+		case 'w':
+			return 48;
+		case 'x':
+			return 49;
+		case 'y':
+			return 50;
+		case 'z':
+			return 51;
+		case '0':
+			return 52;
+		case '1':
+			return 53;
+		case '2':
+			return 54;
+		case '3':
+			return 55;
+		case '4':
+			return 56;
+		case '5':
+			return 57;
+		case '6':
+			return 58;
+		case '7':
+			return 59;
+		case '8':
+			return 60;
+		case '9':
+			return 61;
+		case '+':
+			return 62;
+		case '/':
+			return 63;
+		default:
+			return 0;
+	}
+};
+var $elm$core$Bitwise$or = _Bitwise_or;
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$String$cons = _String_cons;
+var $elm$core$String$fromChar = function (_char) {
+	return A2($elm$core$String$cons, _char, '');
+};
+var $elm$core$Char$fromCode = _Char_fromCode;
+var $truqu$elm_base64$Base64$Decode$intToString = A2($elm$core$Basics$composeR, $elm$core$Char$fromCode, $elm$core$String$fromChar);
+var $truqu$elm_base64$Base64$Decode$add = F2(
+	function (_char, _v0) {
+		var curr = _v0.a;
+		var need = _v0.b;
+		var res = _v0.c;
+		var shiftAndAdd = function (_int) {
+			return (63 & _int) | (curr << 6);
+		};
+		return (!need) ? ((!(128 & _char)) ? _Utils_Tuple3(
+			0,
+			0,
+			_Utils_ap(
+				res,
+				$truqu$elm_base64$Base64$Decode$intToString(_char))) : (((224 & _char) === 192) ? _Utils_Tuple3(31 & _char, 1, res) : (((240 & _char) === 224) ? _Utils_Tuple3(15 & _char, 2, res) : _Utils_Tuple3(7 & _char, 3, res)))) : ((need === 1) ? _Utils_Tuple3(
+			0,
+			0,
+			_Utils_ap(
+				res,
+				$truqu$elm_base64$Base64$Decode$intToString(
+					shiftAndAdd(_char)))) : _Utils_Tuple3(
+			shiftAndAdd(_char),
+			need - 1,
+			res));
+	});
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $truqu$elm_base64$Base64$Decode$toUTF16 = F2(
+	function (_char, acc) {
+		return _Utils_Tuple3(
+			0,
+			0,
+			A2(
+				$truqu$elm_base64$Base64$Decode$add,
+				255 & (_char >>> 0),
+				A2(
+					$truqu$elm_base64$Base64$Decode$add,
+					255 & (_char >>> 8),
+					A2($truqu$elm_base64$Base64$Decode$add, 255 & (_char >>> 16), acc))));
+	});
+var $truqu$elm_base64$Base64$Decode$chomp = F2(
+	function (char_, _v0) {
+		var curr = _v0.a;
+		var cnt = _v0.b;
+		var utf8ToUtf16 = _v0.c;
+		var _char = $truqu$elm_base64$Base64$Decode$charToInt(char_);
+		if (cnt === 3) {
+			return A2($truqu$elm_base64$Base64$Decode$toUTF16, curr | _char, utf8ToUtf16);
+		} else {
+			return _Utils_Tuple3((_char << ((3 - cnt) * 6)) | curr, cnt + 1, utf8ToUtf16);
+		}
+	});
+var $elm$core$String$foldl = _String_foldl;
+var $truqu$elm_base64$Base64$Decode$initial = _Utils_Tuple3(
+	0,
+	0,
+	_Utils_Tuple3(0, 0, ''));
+var $elm$core$Result$map = F2(
+	function (func, ra) {
+		if (ra.$ === 'Ok') {
+			var a = ra.a;
+			return $elm$core$Result$Ok(
+				func(a));
+		} else {
+			var e = ra.a;
+			return $elm$core$Result$Err(e);
+		}
+	});
+var $elm$core$String$dropRight = F2(
+	function (n, string) {
+		return (n < 1) ? string : A3($elm$core$String$slice, 0, -n, string);
+	});
+var $elm$core$String$endsWith = _String_endsWith;
+var $truqu$elm_base64$Base64$Decode$stripNulls = F2(
+	function (input, output) {
+		return A2($elm$core$String$endsWith, '==', input) ? A2($elm$core$String$dropRight, 2, output) : (A2($elm$core$String$endsWith, '=', input) ? A2($elm$core$String$dropRight, 1, output) : output);
+	});
+var $elm$regex$Regex$Match = F4(
+	function (match, index, number, submatches) {
+		return {index: index, match: match, number: number, submatches: submatches};
+	});
+var $elm$regex$Regex$contains = _Regex_contains;
+var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
+var $elm$regex$Regex$fromString = function (string) {
+	return A2(
+		$elm$regex$Regex$fromStringWith,
+		{caseInsensitive: false, multiline: false},
+		string);
+};
+var $elm$regex$Regex$never = _Regex_never;
+var $truqu$elm_base64$Base64$Decode$validBase64Regex = A2(
+	$elm$core$Maybe$withDefault,
+	$elm$regex$Regex$never,
+	$elm$regex$Regex$fromString('^([A-Za-z0-9\\/+]{4})*([A-Za-z0-9\\/+]{2}[A-Za-z0-9\\/+=]{2})?$'));
+var $truqu$elm_base64$Base64$Decode$validate = function (input) {
+	return A2($elm$regex$Regex$contains, $truqu$elm_base64$Base64$Decode$validBase64Regex, input) ? $elm$core$Result$Ok(input) : $elm$core$Result$Err('Invalid base64');
+};
+var $truqu$elm_base64$Base64$Decode$wrapUp = function (_v0) {
+	var _v1 = _v0.c;
+	var need = _v1.b;
+	var res = _v1.c;
+	return (need > 0) ? $elm$core$Result$Err('Invalid UTF-16') : $elm$core$Result$Ok(res);
+};
+var $truqu$elm_base64$Base64$Decode$validateAndDecode = function (input) {
+	return A2(
+		$elm$core$Result$map,
+		$truqu$elm_base64$Base64$Decode$stripNulls(input),
+		A2(
+			$elm$core$Result$andThen,
+			A2(
+				$elm$core$Basics$composeR,
+				A2($elm$core$String$foldl, $truqu$elm_base64$Base64$Decode$chomp, $truqu$elm_base64$Base64$Decode$initial),
+				$truqu$elm_base64$Base64$Decode$wrapUp),
+			$truqu$elm_base64$Base64$Decode$validate(input)));
+};
+var $truqu$elm_base64$Base64$Decode$decode = A2($elm$core$Basics$composeR, $truqu$elm_base64$Base64$Decode$pad, $truqu$elm_base64$Base64$Decode$validateAndDecode);
+var $truqu$elm_base64$Base64$decode = $truqu$elm_base64$Base64$Decode$decode;
+var $author$project$OpenIDConnect$base64Decode = function (data) {
+	var _v0 = $truqu$elm_base64$Base64$decode(data);
+	if (_v0.$ === 'Ok') {
+		var result = _v0.a;
+		return A2($elm$core$String$endsWith, '\u0000', result) ? $elm$core$Result$Ok(
+			A2($elm$core$String$dropRight, 1, result)) : $elm$core$Result$Ok(result);
+	} else {
+		var err = _v0.a;
+		return $elm$core$Result$Err(err);
+	}
+};
+var $elm$json$Json$Decode$decodeString = _Json_runOnString;
+var $author$project$OpenIDConnect$getSub = F2(
+	function (decode, token) {
+		var _v0 = A2($elm$core$String$split, '.', token);
+		if (((_v0.b && _v0.b.b) && _v0.b.b.b) && (!_v0.b.b.b.b)) {
+			var part0 = _v0.a;
+			var _v1 = _v0.b;
+			var part1 = _v1.a;
+			var _v2 = _v1.b;
+			var sign = _v2.a;
+			var _v3 = $author$project$OpenIDConnect$base64Decode(part1);
+			if (_v3.$ === 'Ok') {
+				var payload = _v3.a;
+				var _v4 = A2($elm$json$Json$Decode$decodeString, decode, payload);
+				if (_v4.$ === 'Ok') {
+					var result = _v4.a;
+					return $elm$core$Result$Ok(
+						A2(
+							$author$project$OpenIDConnect$Sub,
+							token,
+							A2($elm$core$Debug$log, 'jwt id_token', result)));
+				} else {
+					var err = _v4.a;
+					return $elm$core$Result$Err(
+						$author$project$OpenIDConnect$Error('decode payload error'));
+				}
+			} else {
+				var err = _v3.a;
+				return $elm$core$Result$Err(
+					$author$project$OpenIDConnect$Error('decode part1 error'));
+			}
+		} else {
+			return $elm$core$Result$Err(
+				$author$project$OpenIDConnect$Error('Invalid id_token'));
+		}
+	});
 var $elm$url$Url$Parser$Internal$Parser = function (a) {
 	return {$: 'Parser', a: a};
 };
@@ -6077,338 +6413,6 @@ var $elm$url$Url$Parser$parse = F2(
 					url.fragment,
 					$elm$core$Basics$identity)));
 	});
-var $author$project$OpenIDConnect$Token = F2(
-	function (a, b) {
-		return {$: 'Token', a: a, b: b};
-	});
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
-var $truqu$elm_base64$Base64$Decode$pad = function (input) {
-	var _v0 = $elm$core$String$length(input) % 4;
-	switch (_v0) {
-		case 3:
-			return input + '=';
-		case 2:
-			return input + '==';
-		default:
-			return input;
-	}
-};
-var $elm$core$Result$andThen = F2(
-	function (callback, result) {
-		if (result.$ === 'Ok') {
-			var value = result.a;
-			return callback(value);
-		} else {
-			var msg = result.a;
-			return $elm$core$Result$Err(msg);
-		}
-	});
-var $truqu$elm_base64$Base64$Decode$charToInt = function (_char) {
-	switch (_char.valueOf()) {
-		case 'A':
-			return 0;
-		case 'B':
-			return 1;
-		case 'C':
-			return 2;
-		case 'D':
-			return 3;
-		case 'E':
-			return 4;
-		case 'F':
-			return 5;
-		case 'G':
-			return 6;
-		case 'H':
-			return 7;
-		case 'I':
-			return 8;
-		case 'J':
-			return 9;
-		case 'K':
-			return 10;
-		case 'L':
-			return 11;
-		case 'M':
-			return 12;
-		case 'N':
-			return 13;
-		case 'O':
-			return 14;
-		case 'P':
-			return 15;
-		case 'Q':
-			return 16;
-		case 'R':
-			return 17;
-		case 'S':
-			return 18;
-		case 'T':
-			return 19;
-		case 'U':
-			return 20;
-		case 'V':
-			return 21;
-		case 'W':
-			return 22;
-		case 'X':
-			return 23;
-		case 'Y':
-			return 24;
-		case 'Z':
-			return 25;
-		case 'a':
-			return 26;
-		case 'b':
-			return 27;
-		case 'c':
-			return 28;
-		case 'd':
-			return 29;
-		case 'e':
-			return 30;
-		case 'f':
-			return 31;
-		case 'g':
-			return 32;
-		case 'h':
-			return 33;
-		case 'i':
-			return 34;
-		case 'j':
-			return 35;
-		case 'k':
-			return 36;
-		case 'l':
-			return 37;
-		case 'm':
-			return 38;
-		case 'n':
-			return 39;
-		case 'o':
-			return 40;
-		case 'p':
-			return 41;
-		case 'q':
-			return 42;
-		case 'r':
-			return 43;
-		case 's':
-			return 44;
-		case 't':
-			return 45;
-		case 'u':
-			return 46;
-		case 'v':
-			return 47;
-		case 'w':
-			return 48;
-		case 'x':
-			return 49;
-		case 'y':
-			return 50;
-		case 'z':
-			return 51;
-		case '0':
-			return 52;
-		case '1':
-			return 53;
-		case '2':
-			return 54;
-		case '3':
-			return 55;
-		case '4':
-			return 56;
-		case '5':
-			return 57;
-		case '6':
-			return 58;
-		case '7':
-			return 59;
-		case '8':
-			return 60;
-		case '9':
-			return 61;
-		case '+':
-			return 62;
-		case '/':
-			return 63;
-		default:
-			return 0;
-	}
-};
-var $elm$core$Bitwise$or = _Bitwise_or;
-var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
-var $elm$core$Bitwise$and = _Bitwise_and;
-var $elm$core$String$cons = _String_cons;
-var $elm$core$String$fromChar = function (_char) {
-	return A2($elm$core$String$cons, _char, '');
-};
-var $elm$core$Char$fromCode = _Char_fromCode;
-var $truqu$elm_base64$Base64$Decode$intToString = A2($elm$core$Basics$composeR, $elm$core$Char$fromCode, $elm$core$String$fromChar);
-var $truqu$elm_base64$Base64$Decode$add = F2(
-	function (_char, _v0) {
-		var curr = _v0.a;
-		var need = _v0.b;
-		var res = _v0.c;
-		var shiftAndAdd = function (_int) {
-			return (63 & _int) | (curr << 6);
-		};
-		return (!need) ? ((!(128 & _char)) ? _Utils_Tuple3(
-			0,
-			0,
-			_Utils_ap(
-				res,
-				$truqu$elm_base64$Base64$Decode$intToString(_char))) : (((224 & _char) === 192) ? _Utils_Tuple3(31 & _char, 1, res) : (((240 & _char) === 224) ? _Utils_Tuple3(15 & _char, 2, res) : _Utils_Tuple3(7 & _char, 3, res)))) : ((need === 1) ? _Utils_Tuple3(
-			0,
-			0,
-			_Utils_ap(
-				res,
-				$truqu$elm_base64$Base64$Decode$intToString(
-					shiftAndAdd(_char)))) : _Utils_Tuple3(
-			shiftAndAdd(_char),
-			need - 1,
-			res));
-	});
-var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
-var $truqu$elm_base64$Base64$Decode$toUTF16 = F2(
-	function (_char, acc) {
-		return _Utils_Tuple3(
-			0,
-			0,
-			A2(
-				$truqu$elm_base64$Base64$Decode$add,
-				255 & (_char >>> 0),
-				A2(
-					$truqu$elm_base64$Base64$Decode$add,
-					255 & (_char >>> 8),
-					A2($truqu$elm_base64$Base64$Decode$add, 255 & (_char >>> 16), acc))));
-	});
-var $truqu$elm_base64$Base64$Decode$chomp = F2(
-	function (char_, _v0) {
-		var curr = _v0.a;
-		var cnt = _v0.b;
-		var utf8ToUtf16 = _v0.c;
-		var _char = $truqu$elm_base64$Base64$Decode$charToInt(char_);
-		if (cnt === 3) {
-			return A2($truqu$elm_base64$Base64$Decode$toUTF16, curr | _char, utf8ToUtf16);
-		} else {
-			return _Utils_Tuple3((_char << ((3 - cnt) * 6)) | curr, cnt + 1, utf8ToUtf16);
-		}
-	});
-var $elm$core$String$foldl = _String_foldl;
-var $truqu$elm_base64$Base64$Decode$initial = _Utils_Tuple3(
-	0,
-	0,
-	_Utils_Tuple3(0, 0, ''));
-var $elm$core$Result$map = F2(
-	function (func, ra) {
-		if (ra.$ === 'Ok') {
-			var a = ra.a;
-			return $elm$core$Result$Ok(
-				func(a));
-		} else {
-			var e = ra.a;
-			return $elm$core$Result$Err(e);
-		}
-	});
-var $elm$core$String$dropRight = F2(
-	function (n, string) {
-		return (n < 1) ? string : A3($elm$core$String$slice, 0, -n, string);
-	});
-var $elm$core$String$endsWith = _String_endsWith;
-var $truqu$elm_base64$Base64$Decode$stripNulls = F2(
-	function (input, output) {
-		return A2($elm$core$String$endsWith, '==', input) ? A2($elm$core$String$dropRight, 2, output) : (A2($elm$core$String$endsWith, '=', input) ? A2($elm$core$String$dropRight, 1, output) : output);
-	});
-var $elm$regex$Regex$Match = F4(
-	function (match, index, number, submatches) {
-		return {index: index, match: match, number: number, submatches: submatches};
-	});
-var $elm$regex$Regex$contains = _Regex_contains;
-var $elm$regex$Regex$fromStringWith = _Regex_fromStringWith;
-var $elm$regex$Regex$fromString = function (string) {
-	return A2(
-		$elm$regex$Regex$fromStringWith,
-		{caseInsensitive: false, multiline: false},
-		string);
-};
-var $elm$regex$Regex$never = _Regex_never;
-var $truqu$elm_base64$Base64$Decode$validBase64Regex = A2(
-	$elm$core$Maybe$withDefault,
-	$elm$regex$Regex$never,
-	$elm$regex$Regex$fromString('^([A-Za-z0-9\\/+]{4})*([A-Za-z0-9\\/+]{2}[A-Za-z0-9\\/+=]{2})?$'));
-var $truqu$elm_base64$Base64$Decode$validate = function (input) {
-	return A2($elm$regex$Regex$contains, $truqu$elm_base64$Base64$Decode$validBase64Regex, input) ? $elm$core$Result$Ok(input) : $elm$core$Result$Err('Invalid base64');
-};
-var $truqu$elm_base64$Base64$Decode$wrapUp = function (_v0) {
-	var _v1 = _v0.c;
-	var need = _v1.b;
-	var res = _v1.c;
-	return (need > 0) ? $elm$core$Result$Err('Invalid UTF-16') : $elm$core$Result$Ok(res);
-};
-var $truqu$elm_base64$Base64$Decode$validateAndDecode = function (input) {
-	return A2(
-		$elm$core$Result$map,
-		$truqu$elm_base64$Base64$Decode$stripNulls(input),
-		A2(
-			$elm$core$Result$andThen,
-			A2(
-				$elm$core$Basics$composeR,
-				A2($elm$core$String$foldl, $truqu$elm_base64$Base64$Decode$chomp, $truqu$elm_base64$Base64$Decode$initial),
-				$truqu$elm_base64$Base64$Decode$wrapUp),
-			$truqu$elm_base64$Base64$Decode$validate(input)));
-};
-var $truqu$elm_base64$Base64$Decode$decode = A2($elm$core$Basics$composeR, $truqu$elm_base64$Base64$Decode$pad, $truqu$elm_base64$Base64$Decode$validateAndDecode);
-var $truqu$elm_base64$Base64$decode = $truqu$elm_base64$Base64$Decode$decode;
-var $author$project$OpenIDConnect$base64Decode = function (data) {
-	var _v0 = $truqu$elm_base64$Base64$decode(data);
-	if (_v0.$ === 'Ok') {
-		var result = _v0.a;
-		return A2($elm$core$String$endsWith, '\u0000', result) ? $elm$core$Result$Ok(
-			A2($elm$core$String$dropRight, 1, result)) : $elm$core$Result$Ok(result);
-	} else {
-		var err = _v0.a;
-		return $elm$core$Result$Err(err);
-	}
-};
-var $elm$json$Json$Decode$decodeString = _Json_runOnString;
-var $author$project$OpenIDConnect$parseToken = F2(
-	function (decode, token) {
-		var _v0 = A2($elm$core$String$split, '.', token);
-		if (((_v0.b && _v0.b.b) && _v0.b.b.b) && (!_v0.b.b.b.b)) {
-			var part0 = _v0.a;
-			var _v1 = _v0.b;
-			var part1 = _v1.a;
-			var _v2 = _v1.b;
-			var sign = _v2.a;
-			var _v3 = $author$project$OpenIDConnect$base64Decode(part1);
-			if (_v3.$ === 'Ok') {
-				var payload = _v3.a;
-				var _v4 = A2($elm$json$Json$Decode$decodeString, decode, payload);
-				if (_v4.$ === 'Ok') {
-					var result = _v4.a;
-					return $elm$core$Result$Ok(
-						A2($author$project$OpenIDConnect$Token, token, result));
-				} else {
-					var err = _v4.a;
-					return $elm$core$Result$Err(
-						$author$project$OpenIDConnect$Error('decode payload error'));
-				}
-			} else {
-				var err = _v3.a;
-				return $elm$core$Result$Err(
-					$author$project$OpenIDConnect$Error('decode part1 error'));
-			}
-		} else {
-			return $elm$core$Result$Err(
-				$author$project$OpenIDConnect$Error('Invalid id_token'));
-		}
-	});
 var $elm$url$Url$Parser$Parser = function (a) {
 	return {$: 'Parser', a: a};
 };
@@ -6508,7 +6512,7 @@ var $author$project$OpenIDConnect$parseWithMaybeNonce = F3(
 				if (_v0.a.a.$ === 'Just') {
 					var _v1 = _v0.a;
 					var id = _v1.a.a;
-					return A2($author$project$OpenIDConnect$parseToken, decode, id);
+					return A2($author$project$OpenIDConnect$getSub, decode, id);
 				} else {
 					if (_v0.a.b.$ === 'Just') {
 						var _v2 = _v0.a;
@@ -6539,15 +6543,26 @@ var $author$project$Internal$Snackbar$Implementation$toast = F2(
 		return {action: $elm$core$Maybe$Nothing, dismissOnAction: true, fade: 250, message: message, onDismiss: onDismiss, stacked: false, timeout: 5000};
 	});
 var $author$project$Material$Snackbar$toast = $author$project$Internal$Snackbar$Implementation$toast;
+var $author$project$OpenIDConnect$tokenData = function (t) {
+	if (t.$ === 'Sub') {
+		var token = t.a;
+		var data = t.b;
+		return data;
+	} else {
+		var string = t.a;
+		var data = t.b;
+		return data;
+	}
+};
 var $author$project$Main$init = F3(
 	function (_v0, origin, key) {
 		var randomBytes = _v0.randomBytes;
 		var fixed = function () {
-			var _v6 = origin.fragment;
-			if (_v6.$ === 'Nothing') {
+			var _v7 = origin.fragment;
+			if (_v7.$ === 'Nothing') {
 				return origin;
 			} else {
-				var a = _v6.a;
+				var a = _v7.a;
 				return A2($elm$core$String$contains, 'id_token', a) ? _Utils_update(
 					origin,
 					{fragment: $elm$core$Maybe$Nothing, query: origin.fragment}) : origin;
@@ -6557,32 +6572,32 @@ var $author$project$Main$init = F3(
 		var _v1 = A2($author$project$OpenIDConnect$parse, $author$project$OpenIDConnect$Decode$subDecoder, fixed);
 		if (_v1.$ === 'Ok') {
 			var token = _v1.a;
+			var contents = A2(
+				$author$project$Material$Snackbar$toast,
+				$elm$core$Maybe$Nothing,
+				A2(
+					$elm$core$Debug$log,
+					'ID',
+					$author$project$OpenIDConnect$tokenData(token)));
+			var _v2 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
+			var mdc = _v2.a;
+			var effects = _v2.b;
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						id_token: $elm$core$Maybe$Just(token)
+						id_token: $elm$core$Maybe$Just(token),
+						mdc: mdc
 					}),
-				$elm$core$Platform$Cmd$none);
+				effects);
 		} else {
 			switch (_v1.a.$) {
 				case 'NoToken':
-					var _v2 = _v1.a;
+					var _v3 = _v1.a;
 					var contents = A2(
 						$author$project$Material$Snackbar$toast,
 						$elm$core$Maybe$Nothing,
 						A2($elm$core$Debug$log, 'No Token', 'No Token'));
-					var _v3 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
-					var mdc = _v3.a;
-					var effects = _v3.b;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{mdc: mdc}),
-						effects);
-				case 'Error':
-					var a = _v1.a.a;
-					var contents = A2($author$project$Material$Snackbar$toast, $elm$core$Maybe$Nothing, a);
 					var _v4 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
 					var mdc = _v4.a;
 					var effects = _v4.b;
@@ -6591,11 +6606,22 @@ var $author$project$Main$init = F3(
 							model,
 							{mdc: mdc}),
 						effects);
-				default:
-					var contents = A2($author$project$Material$Snackbar$toast, $elm$core$Maybe$Nothing, 'No');
+				case 'Error':
+					var a = _v1.a.a;
+					var contents = A2($author$project$Material$Snackbar$toast, $elm$core$Maybe$Nothing, a);
 					var _v5 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
 					var mdc = _v5.a;
 					var effects = _v5.b;
+					return _Utils_Tuple2(
+						_Utils_update(
+							model,
+							{mdc: mdc}),
+						effects);
+				default:
+					var contents = A2($author$project$Material$Snackbar$toast, $elm$core$Maybe$Nothing, 'No');
+					var _v6 = A4($author$project$Material$Snackbar$add, $author$project$Main$Mdc, 'my-snackbar', contents, model.mdc);
+					var mdc = _v6.a;
+					var effects = _v6.b;
 					return _Utils_Tuple2(
 						_Utils_update(
 							model,
@@ -7216,11 +7242,8 @@ var $author$project$OpenIDConnect$authorize = function (_v0) {
 				'state',
 				state,
 				A3($author$project$OpenIDConnect$qsAddList, 'scope', scope, qs))));
-	var fUrl = A2(
-		$elm$core$Debug$log,
-		'fUrl',
-		_Utils_ap(url, t));
-	return $elm$browser$Browser$Navigation$load(fUrl);
+	var aUrl = _Utils_ap(url, t);
+	return $elm$browser$Browser$Navigation$load(aUrl);
 };
 var $elm$core$Array$fromListHelp = F3(
 	function (list, nodeList, nodeListSize) {
@@ -9618,7 +9641,7 @@ var $author$project$Main$update = F2(
 						model,
 						$elm$browser$Browser$Navigation$load(
 							$elm$url$Url$toString(model.redirectUri)));
-				default:
+				case 'StartPageMsg':
 					var msg_ = msg.a;
 					var _v4 = A3($author$project$App$Startpage$update, $author$project$Main$StartPageMsg, msg_, model.startpage);
 					var startpage = _v4.a;
@@ -9628,6 +9651,21 @@ var $author$project$Main$update = F2(
 							model,
 							{startpage: startpage}),
 						effects);
+				default:
+					var result = msg.a;
+					if (result.$ === 'Ok') {
+						var value = result.a;
+						return _Utils_Tuple2(
+							_Utils_update(
+								model,
+								{
+									discovery: $elm$core$Maybe$Just(value)
+								}),
+							$elm$core$Platform$Cmd$none);
+					} else {
+						var error = result.a;
+						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+					}
 			}
 		}
 	});
@@ -13661,7 +13699,7 @@ var $author$project$App$Startpage$view = F3(
 								},
 								_List_fromArray(
 									[
-										{icon: $author$project$App$List$view, subtitle: 'Keystores Subtitle', title: 'Keystores', url: $author$project$App$Url$SecretPage}
+										{icon: $author$project$App$List$view, subtitle: 'Things Subtitle', title: 'Things', url: $author$project$App$Url$SecretPage}
 									])))
 						]))
 				]));
@@ -13813,7 +13851,13 @@ var $author$project$Main$view = F3(
 					var _v4 = _v1.b;
 					return _List_fromArray(
 						[
-							$author$project$Main$view_(model)
+							A2(
+							$author$project$Main$viewBody,
+							model,
+							A2(
+								$author$project$Main$viewLogin,
+								model,
+								{buttons: buttons, sn: sn}))
 						]);
 				}
 			} else {
@@ -13849,10 +13893,9 @@ var $author$project$Main$configurationFor = function (provider) {
 		profileEndpoint: _Utils_update(
 			defaultHttpsUrl,
 			{host: 'openidconnect.googleapis.com', path: '/v1/userinfo'}),
-		provider: $author$project$Main$Google,
+		provider: 'google',
 		scope: _List_fromArray(
 			['openid']),
-		secret: 'cYZ6apiCwRYg3EOSjZVUXwzA',
 		tokenEndpoint: _Utils_update(
 			defaultHttpsUrl,
 			{host: 'oauth2.googleapis.com', path: '/token'})

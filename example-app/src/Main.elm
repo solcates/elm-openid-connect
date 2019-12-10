@@ -70,7 +70,8 @@ type Msg
     | ToggleDrawer
     | SignOutRequested
     | SelectDrawerItem Int
-    | Authorize OAuthConfiguration
+    | GotDiscoveryResult (Result Http.Error String)
+    | Authorize OpenIDConnect.OAuthConfiguration
 
 
 
@@ -95,6 +96,7 @@ type alias Model =
     , id_token : Maybe (OpenIDConnect.Token String)
     , access_token : Maybe (OpenIDConnect.Token String)
     , profile : Maybe Profile
+    , discovery : Maybe String
     }
 
 
@@ -115,23 +117,12 @@ defaultModel state origin key =
     , profile = Nothing
     , error = Nothing
     , headers = []
+    , discovery = Nothing
     }
 
 
 type OAuthProvider
     = Google
-
-
-type alias OAuthConfiguration =
-    { provider : OAuthProvider
-    , authorizationEndpoint : Url.Url
-    , tokenEndpoint : Url.Url
-    , profileEndpoint : Url.Url
-    , clientId : String
-    , secret : String
-    , scope : List String
-    , profileDecoder : Json.Decoder Profile
-    }
 
 
 type alias Profile =
@@ -248,6 +239,14 @@ update msg model =
             in
             ( { model | startpage = startpage }, effects )
 
+        GotDiscoveryResult result ->
+            case result of
+                Ok value ->
+                    ( { model | discovery = Just value }, Cmd.none )
+
+                Err error ->
+                    ( model, Cmd.none )
+
 
 
 --
@@ -276,7 +275,14 @@ init { randomBytes } origin key =
     case OpenIDConnect.parse subDecoder fixed of
         -- A token has been parsed
         Result.Ok token ->
-            ( { model | id_token = Just token }, Cmd.none )
+            let
+                contents =
+                    Snackbar.toast Nothing (Debug.log "ID" (OpenIDConnect.tokenData token))
+
+                ( mdc, effects ) =
+                    Snackbar.add Mdc "my-snackbar" contents model.mdc
+            in
+            ( { model | id_token = Just token, mdc = mdc }, effects )
 
         -- Nothing to parse, unauthenticated
         Result.Err OpenIDConnect.NoToken ->
@@ -325,9 +331,10 @@ subscriptions model =
         ]
 
 
-configurationFor : OAuthProvider -> OAuthConfiguration
+configurationFor : OAuthProvider -> OpenIDConnect.OAuthConfiguration
 configurationFor provider =
     let
+        defaultHttpsUrl : Url.Url
         defaultHttpsUrl =
             { protocol = Https
             , host = ""
@@ -339,9 +346,8 @@ configurationFor provider =
     in
     case provider of
         Google ->
-            { provider = Google
+            { provider = "google"
             , clientId = "55433631652-u1q925imhoo270ub357t599su0qkjh37.apps.googleusercontent.com"
-            , secret = "cYZ6apiCwRYg3EOSjZVUXwzA"
             , authorizationEndpoint = { defaultHttpsUrl | host = "accounts.google.com", path = "/o/oauth2/v2/auth" }
             , tokenEndpoint = { defaultHttpsUrl | host = "oauth2.googleapis.com", path = "/token" }
             , profileEndpoint = { defaultHttpsUrl | host = "openidconnect.googleapis.com", path = "/v1/userinfo" }
@@ -351,41 +357,6 @@ configurationFor provider =
                     (Json.field "name" Json.string)
                     (Json.field "picture" Json.string)
             }
-
-
-oauthProviderToString : OAuthProvider -> String
-oauthProviderToString provider =
-    case provider of
-        Google ->
-            "google"
-
-
-oauthProviderFromString : String -> Maybe OAuthProvider
-oauthProviderFromString str =
-    case str of
-        "google" ->
-            Just Google
-
-        _ ->
-            Nothing
-
-
-makeState : String -> OAuthProvider -> String
-makeState suffix provider =
-    oauthProviderToString provider ++ "." ++ suffix
-
-
-oauthProviderFromState : String -> Maybe OAuthProvider
-oauthProviderFromState str =
-    str
-        |> stringLeftUntil (\c -> c == ".")
-        |> oauthProviderFromString
-
-
-randomBytesFromState : String -> String
-randomBytesFromState str =
-    str
-        |> stringDropLeftUntil (\c -> c == ".")
 
 
 stringDropLeftUntil : (String -> Bool) -> String -> String
@@ -581,7 +552,7 @@ viewError error =
                 [ text msg ]
 
 
-viewSignInButton : OAuthProvider -> (OAuthConfiguration -> msg) -> Html msg
+viewSignInButton : OAuthProvider -> (OpenIDConnect.OAuthConfiguration -> msg) -> Html msg
 viewSignInButton provider onSignIn =
     button
         [ attrLogo provider
